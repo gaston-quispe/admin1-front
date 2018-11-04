@@ -1,3 +1,9 @@
+/* devuelve, x ejemplo
+user: {
+    id: '1',
+    rol: 'paciente'
+}
+*/
 export const getUser = () => {
     return localStorage.getItem("user")
 }
