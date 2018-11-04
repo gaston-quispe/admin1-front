@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
-import Axios from 'axios';
-import config from '../config';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
@@ -9,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 import {setJwt} from '../helpers/jwt'
 import {setUser} from '../helpers/user'
+import proxy from './proxy';
 
 const styles = theme => ({
     button: {
@@ -47,14 +46,13 @@ class Login extends Component {
 
     submit(e) {
         e.preventDefault();
-        Axios.post(config.API_ENDPOINT + '/signin', {
-            email: this.state.email,
-            password: this.state.password,
-        }).then(res => {
-            setJwt(res.data.token)
-            setUser(res.data.user)
-            this.props.history.push('/')
-        }).catch(err => console.log(`No se pudo autenticar: ${err}`))
+        proxy.login(this.state.email, this.state.password)
+            .then(res => {
+                setJwt(res.data.token)
+                setUser(res.data.user)
+                this.props.history.push('/')
+            })
+            .catch(err => console.log(`No se pudo autenticar: ${err}`))
     }
 
     render() {
