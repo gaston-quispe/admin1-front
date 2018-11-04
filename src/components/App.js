@@ -22,11 +22,11 @@ class App extends Component {
               <Switch>
                 <ResponsiveDrawer titles={appBarTitles}>
                   <Route path="/Login" component={Login}/>
-                  <AuthenticatedComponent>
+                  {/*<AuthenticatedComponent>*/}
                     <Route exact path="/" component={Home} />
                     <Route path="/ObtenerTurno" component={ObtenerTurno} />
                     <Route path="/MisTurnos" component={MisTurnos} />
-                  </AuthenticatedComponent>
+                  {/*</AuthenticatedComponent>*/}
 
                 </ResponsiveDrawer>
               </Switch>

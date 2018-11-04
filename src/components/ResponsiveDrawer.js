@@ -92,8 +92,10 @@ class ResponsiveDrawer extends React.Component {
             </ListItemIcon>
             <ListItemText
               primary={"Obtener Turno"}
-              onClick={()=>{
-                getJwt() ? this.props.history.push('/ObtenerTurno') : this.props.history.push('/Login');}}
+              onClick={()=>{this.props.history.push('/ObtenerTurno')}}
+              
+              /*onClick={()=>{
+              getJwt() ? this.props.history.push('/ObtenerTurno') : this.props.history.push('/Login');}} */
             />
           </ListItem>
 
@@ -103,8 +105,9 @@ class ResponsiveDrawer extends React.Component {
             </ListItemIcon>
             <ListItemText
               primary={"Mis Turnos"}
-              onClick={()=>{
-                getJwt() ? this.props.history.push('/MisTurnos') : this.props.history.push('/Login');}}
+              onClick={()=>{ this.props.history.push('/MisTurnos') }}
+              /*onClick={()=>{
+              getJwt() ? this.props.history.push('/MisTurnos') : this.props.history.push('/Login');}}*/
             />
           </ListItem>
         </List>
