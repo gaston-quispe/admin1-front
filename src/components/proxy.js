@@ -11,6 +11,7 @@ class Proxy {
             resolve ({
                 data: {
                 user: {
+                        id: '1',
                         rol: 'paciente'
                     },
                     token: "xxxxx.yyyyy.zzzzz"
