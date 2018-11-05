@@ -120,6 +120,92 @@ class Proxy {
             );
         });
     }
+
+    getEspecialidadesTurnosDisponiblesEnRangoDeFechas(idEspecialidad, fechaInicial, fechaFinal) {
+        return new Promise((resolve, reject) => {
+            resolve (
+                [{
+                    id: "1",
+                    Descripcion: "pediatria",
+                    Apellido: "Moriello",
+                    Nombre: "Khalil",
+                    Fecha: '2018-09-13',
+                    HoraDesde : "16:00",
+                    HoraHasta: "16:30",
+                },{
+                    id: "2",
+                    Descripcion: "pediatria",
+                    Apellido: "Moriello",
+                    Nombre: "Khalil",
+                    Fecha: '2018-09-21',
+                    HoraDesde: "16:30",
+                    HoraHasta: "17:00"
+                },{
+                    id: "3",
+                    Descripcion: "pediatria",
+                    Apellido: "Moriello",
+                    Nombre: "Khalil",
+                    Fecha: '2018-12-06',
+                    HoraDesde: "17:00",
+                    HoraHasta: "17:30"
+                },{
+                    id:"4",
+                    Descripcion: "pediatria",
+                    Apellido: "Perez",
+                    Nombre: "Sergio",
+                    Fecha: '2018-11-23',
+                    HoraDesde: "09:30",
+                    HoraHasta: "10:00"
+                },
+                {
+                    id:"5",
+                    Descripcion: "pediatria",
+                    Apellido: "Flores",
+                    Nombre: "Osvaldo",
+                    Fecha: '2018-11-11',
+                    HoraDesde: "17:30",
+                    HoraHasta: "18:00"
+                },
+                {
+                    id:"6",
+                    Descripcion: "pediatria",
+                    Apellido: "Flores",
+                    Nombre: "Osvaldo",
+                    Fecha: '2018-11-11',
+                    HoraDesde: "18:00",
+                    HoraHasta: "18:30"
+                },
+                {
+                    id:"7",
+                    Descripcion: "pediatria",
+                    Apellido: "Flores",
+                    Nombre: "Osvaldo",
+                    Fecha: '2018-11-11',
+                    HoraDesde: "12:30",
+                    HoraHasta: "13:00"
+                },
+                {
+                    id:"8",
+                    Descripcion: "pediatria",
+                    Apellido: "Garcia",
+                    Nombre: "Pedro",
+                    Fecha: '2018-11-11',
+                    HoraDesde: "12:30",
+                    HoraHasta: "13:30"
+                },
+                {
+                    id:"9",
+                    Descripcion: "pediatria",
+                    Apellido: "Flores",
+                    Nombre: "Pedro",
+                    Fecha: '2018-11-11',
+                    HoraDesde: "12:30",
+                    HoraHasta: "13:00"
+                }            
+            ]
+            );
+        });
+    }
 }
 
 export default new Proxy();
