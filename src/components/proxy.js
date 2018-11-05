@@ -69,8 +69,9 @@ class Proxy {
     }
 
     getMedico(idMedico) {
+        var medicos = this.data.medicos;
         return new Promise((resolve, reject) => {
-            resolve (this.datos.medicos[idMedico]);
+            resolve (medicos[idMedico]);
         });
     }
 

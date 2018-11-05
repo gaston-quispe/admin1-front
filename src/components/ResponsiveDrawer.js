@@ -17,9 +17,11 @@ import ListItemText from "@material-ui/core/ListItemText";
 import RecentActorsIcon from "@material-ui/icons/RecentActors";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import AccountIcon from "@material-ui/icons/AccountCircle";
 import { withRouter } from 'react-router-dom';
 import { getJwt, deleteJwt } from '../helpers/jwt';
 import { deleteUser } from '../helpers/user';
+import { getUser } from '../helpers/user';
 
 const drawerWidth = 240;
 
@@ -86,6 +88,17 @@ class ResponsiveDrawer extends React.Component {
         </div>
         <Divider />
         <List>
+          
+          <ListItem button key={"Ver datos Médico"}>
+            <ListItemIcon>
+              <AccountIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Datos Médico"}
+              onClick={()=>{ this.props.history.push('/DetallesMedico') }}
+            />
+          </ListItem>
+
           <ListItem button key={"Obtener Turno"}>
             <ListItemIcon>
               <RecentActorsIcon />
@@ -105,7 +118,14 @@ class ResponsiveDrawer extends React.Component {
             </ListItemIcon>
             <ListItemText
               primary={"Mis Turnos"}
-              onClick={()=>{ this.props.history.push('/MisTurnos') }}
+              onClick={()=>{
+                console.log("rol: " + getUser().rol)
+                if(getUser().rol == 'paciente'){
+                    this.props.history.push('/DetallesPaciente')
+                } else{
+                    this.props.history.push('/DetallesMedico')
+                }
+                }}
               /*onClick={()=>{
               getJwt() ? this.props.history.push('/MisTurnos') : this.props.history.push('/Login');}}*/
             />
