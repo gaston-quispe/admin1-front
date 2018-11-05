@@ -138,7 +138,6 @@ class ObtenerTurno extends Component {
 
     handleConfirmarTurno(event) {
         console.log("Confirmado")
-        this.props.history.push('/')
     }
 
     filtros(classes) {
