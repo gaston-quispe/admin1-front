@@ -17,6 +17,7 @@ import ListItemText from "@material-ui/core/ListItemText";
 import RecentActorsIcon from "@material-ui/icons/RecentActors";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import AccountIcon from "@material-ui/icons/AccountCircle";
 import { withRouter } from 'react-router-dom';
 import { getJwt, deleteJwt } from '../helpers/jwt';
 import { deleteUser } from '../helpers/user';
@@ -87,6 +88,17 @@ class ResponsiveDrawer extends React.Component {
         </div>
         <Divider />
         <List>
+          
+          <ListItem button key={"Ver datos Médico"}>
+            <ListItemIcon>
+              <AccountIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary={"Datos Médico"}
+              onClick={()=>{ this.props.history.push('/DetallesMedico') }}
+            />
+          </ListItem>
+
           <ListItem button key={"Obtener Turno"}>
             <ListItemIcon>
               <RecentActorsIcon />
