@@ -20,6 +20,7 @@ import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
 import { withRouter } from 'react-router-dom';
 import { getJwt, deleteJwt } from '../helpers/jwt';
 import { deleteUser } from '../helpers/user';
+import { getUser } from '../helpers/user';
 
 const drawerWidth = 240;
 
@@ -105,7 +106,14 @@ class ResponsiveDrawer extends React.Component {
             </ListItemIcon>
             <ListItemText
               primary={"Mis Turnos"}
-              onClick={()=>{ this.props.history.push('/MisTurnos') }}
+              onClick={()=>{
+                console.log("rol: " + getUser().rol)
+                if(getUser().rol == 'paciente'){
+                    this.props.history.push('/DetallesPaciente')
+                } else{
+                    this.props.history.push('/DetallesMedico')
+                }
+                }}
               /*onClick={()=>{
               getJwt() ? this.props.history.push('/MisTurnos') : this.props.history.push('/Login');}}*/
             />

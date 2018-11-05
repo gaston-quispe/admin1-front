@@ -6,12 +6,16 @@ import ObtenerTurno from './ObtenerTurno';
 import AuthenticatedComponent from './AuthenticatedComponent';
 import ResponsiveDrawer from "./ResponsiveDrawer";
 import MisTurnos from "./MisTurnos"
+import DetallesMedico from "./DetallesMedico"
+import DetallesPaciente from "./DetallesPaciente"
 
 const appBarTitles = {
     "/" : "Home",
     "/Login" : "Login",
     "/ObtenerTurno" : "Obtener Turno",
     "/MisTurnos" : "Mis Turnos",
+    "/DetallesPaciente" : "Detalles paciente",
+    "/DetallesMedico" : "Detalles medico",
 }
 
 class App extends Component {
@@ -26,6 +30,8 @@ class App extends Component {
                     <Route exact path="/" component={Home} />
                     <Route path="/ObtenerTurno" component={ObtenerTurno} />
                     <Route path="/MisTurnos" component={MisTurnos} />
+                    <Route path="/DetallesMedico" component={DetallesMedico} />
+                    <Route path="/DetallesPaciente" component={DetallesPaciente} />
                   {/*</AuthenticatedComponent>*/}
 
                 </ResponsiveDrawer>
