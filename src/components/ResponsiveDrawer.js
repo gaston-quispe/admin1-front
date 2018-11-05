@@ -121,7 +121,7 @@ class ResponsiveDrawer extends React.Component {
               onClick={()=>{
                 console.log("rol: " + getUser().rol)
                 if(getUser().rol == 'paciente'){
-                    this.props.history.push('/DetallesPaciente')
+                    this.props.history.push('/DetallesTurnosPaciente')
                 } else{
                     this.props.history.push('/DetallesMedico')
                 }
