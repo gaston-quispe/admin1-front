@@ -8,6 +8,8 @@ import ResponsiveDrawer from "./ResponsiveDrawer";
 import MisTurnos from "./MisTurnos"
 import DetallesMedico from "./DetallesMedico"
 import DetallesTurnosPaciente from "./DetallesTurnosPaciente"
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const appBarTitles = {
     "/" : "Home",
@@ -17,7 +19,6 @@ const appBarTitles = {
     "/DetallesTurnosPaciente" : "Detalles turnos paciente",
     "/DetallesMedico" : "Detalles medico",
 }
-
 class App extends Component {
     render() {
       return (
@@ -37,6 +38,18 @@ class App extends Component {
                 </ResponsiveDrawer>
               </Switch>
           </BrowserRouter>
+          <ToastContainer style = {{height: '50px'}}
+            position="top-right"
+            autoClose={2500}
+            hideProgressBar
+            closeButton={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnVisibilityChange
+            draggable
+            pauseOnHover
+            />
         </div>
       );
     }

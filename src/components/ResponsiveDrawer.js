@@ -78,6 +78,10 @@ class ResponsiveDrawer extends React.Component {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
+  handleDrawerClose = () => {
+    this.setState(state => ({ mobileOpen: false }));
+  };
+
   render() {
     const { classes, theme, children } = this.props;
     
@@ -95,7 +99,9 @@ class ResponsiveDrawer extends React.Component {
             </ListItemIcon>
             <ListItemText
               primary={"Datos Médico"}
-              onClick={()=>{ this.props.history.push('/DetallesMedico') }}
+              onClick={()=>{
+                this.handleDrawerClose();
+                this.props.history.push('/DetallesMedico') }}
             />
           </ListItem>
 
@@ -105,7 +111,9 @@ class ResponsiveDrawer extends React.Component {
             </ListItemIcon>
             <ListItemText
               primary={"Obtener Turno"}
-              onClick={()=>{this.props.history.push('/ObtenerTurno')}}
+              onClick={()=>{
+                this.handleDrawerClose();
+                this.props.history.push('/ObtenerTurno')}}
               
               /*onClick={()=>{
               getJwt() ? this.props.history.push('/ObtenerTurno') : this.props.history.push('/Login');}} */
@@ -121,8 +129,10 @@ class ResponsiveDrawer extends React.Component {
               onClick={()=>{
                 console.log("rol: " + getUser().rol)
                 if(getUser().rol == 'paciente'){
+                    this.handleDrawerClose();  
                     this.props.history.push('/DetallesTurnosPaciente')
                 } else{
+                    this.handleDrawerClose();  
                     this.props.history.push('/DetallesMedico')
                 }
                 }}
@@ -142,6 +152,7 @@ class ResponsiveDrawer extends React.Component {
             onClick={()=>{
               deleteJwt();
               deleteUser();
+              this.handleDrawerClose();
               this.props.history.push('/Login');
             }}
           />
