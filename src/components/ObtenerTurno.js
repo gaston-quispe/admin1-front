@@ -148,9 +148,10 @@ class ObtenerTurno extends Component {
 
     }
 
-    //componentDidMount() {
-    //    this.actualizarListaDeTurnos();
-    //}
+//    componentDidMount() {
+ //       this.actualizarListaDeTurnos();
+//        this.filtrarTurnos();
+  //  }
 
     actualizarListaDeTurnos() {
         this.setState({mostrarCartelitoNoHayResultados: true})
@@ -162,8 +163,9 @@ class ObtenerTurno extends Component {
             proxy.getEspecialidadesTurnosDisponiblesEnRangoDeFechas(this.state.idEspecialista, this.state.fechaInicial, this.state.fechaFinal)
                 .then((turnos) => {
                     this.setState({turnosDisponibles: turnos});
-                    this.actualizarListaMedicosDisponibles();
+                    
                     this.filtrarTurnos();
+                    this.actualizarListaMedicosDisponibles();
                 })
         }
     }
@@ -175,7 +177,7 @@ class ObtenerTurno extends Component {
     }
 
     actualizarListaMedicosDisponibles() {
-        let res = this.state.turnosDisponibles.map((turno) => {
+        let res = this.state.turnosDisponiblesFiltrados.map((turno) => {
             return turno.Nombre + ' ' + turno.Apellido;
         })
         this.setState({listaMedicosDisponibles: this.eliminarDuplicados(res)})
@@ -195,15 +197,29 @@ class ObtenerTurno extends Component {
         return listaTurnos;
     }
 
+    filtrarXFecha(listaTurnos) {
+        return listaTurnos.filter((turno) => {
+            return this.state.fechaInicial <= turno.Fecha && turno.Fecha <= this.state.fechaFinal;
+        })
+    }
+
+    filtrarXEspecialidad(listaTurnos) {
+        return listaTurnos.filter((turno) => {
+            return this.state.idEspecialista == turno.Descripcion
+        })
+    }
+
     filtrarTurnos() {
         let filtrados = this.filtrarXMedico(this.state.turnosDisponibles);
+        filtrados = this.filtrarXEspecialidad(filtrados)
         filtrados = this.filtrarXHorario(filtrados)
+        filtrados = this.filtrarXFecha(filtrados)
         this.setState({turnosDisponiblesFiltrados: filtrados});
     }
 
     handleChangeEspecialista(event) {
         this.setState(
-            {idEspecialista:  event.target.value}, this.actualizarListaDeTurnos)
+            {idEspecialista:  event.target.value, filtroMedico: ""}, this.actualizarListaDeTurnos)
     }
 
     handleChangeMedico(event) {
@@ -251,9 +267,9 @@ class ObtenerTurno extends Component {
                         className={classes.selectEmpty}
                     >
                         <MenuItem value=""><em>Seleccione Especialista</em></MenuItem>
-                        <MenuItem value={1}>Otorrino</MenuItem>
-                        <MenuItem value={2}>Cardiologo</MenuItem>
-                        <MenuItem value={3}>Pediatra</MenuItem>
+                        <MenuItem value='Otorrino'>Otorrino</MenuItem>
+                        <MenuItem value='Cardiologo'>Cardiologo</MenuItem>
+                        <MenuItem value='Pediatria'>Pediatria</MenuItem>
                     </Select>
                     {/*<FormHelperText>Label + placeholder</FormHelperText>*/}
                 </FormControl>
@@ -380,7 +396,7 @@ class ObtenerTurno extends Component {
                 return (
                   <TableRow key={item.id} className={classes.seleccionado} onClick={ (e) => this.modalHandleOpen(index)}>
                     <TableCell padding='none' style={{textAlign: "left"}} numeric>{item.Nombre + ' ' + item.Apellido}</TableCell>
-                    <TableCell padding='none' style={{textAlign: "center"}} numeric>2018-11-13</TableCell>
+                    <TableCell padding='none' style={{textAlign: "center"}} numeric>{item.Fecha}</TableCell>
                     <TableCell padding='none' style={{textAlign: "right"}} scope="row">{item.HoraDesde + ' a ' + item.HoraHasta}</TableCell>
                   </TableRow>
                 );
