@@ -114,12 +114,12 @@ class ResponsiveDrawer extends React.Component {
             />
           </ListItem>
               */}
-          <ListItem button key={"Obtener Turno"}>
+          <ListItem button key={"Solicitar Turno"}>
             <ListItemIcon>
               <RecentActorsIcon />
             </ListItemIcon>
             <ListItemText
-              primary={"Obtener Turno"}
+              primary={"Solicitar Turno"}
               onClick={()=>{
                 this.handleDrawerClose();
                 this.props.history.push('/ObtenerTurno')}}
