@@ -256,7 +256,7 @@ class ObtenerTurno extends Component {
             <div>
                 <FormControl className={classes.formControl}>
                     <InputLabel shrink htmlFor="idEspecialista-label-placeholder">
-                        Especialista
+                        Especialidad
                     </InputLabel>
                     <Select
                         value={this.state.idEspecialista}
@@ -266,7 +266,7 @@ class ObtenerTurno extends Component {
                         //name="idEspecialista"
                         className={classes.selectEmpty}
                     >
-                        <MenuItem value=""><em>Seleccione Especialista</em></MenuItem>
+                        <MenuItem value=""><em>Seleccione Especialidad</em></MenuItem>
                         <MenuItem value='Otorrino'>Otorrino</MenuItem>
                         <MenuItem value='Cardiologo'>Cardiologo</MenuItem>
                         <MenuItem value='Pediatria'>Pediatria</MenuItem>
