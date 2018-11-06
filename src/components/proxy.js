@@ -41,23 +41,14 @@ class Proxy {
 
     getPacienteTurnos(idPaciente) {
         return new Promise((resolve, reject) => {
-            resolve ([{
-                id: "1",
-                pacienteID: "3",
-                profesionalID: "2",
-                fecha: "2018",
-                franjaHorariaID: "1125864895",
-                asistio: false,
-                cancelo: false
-            }, {
-                id: "1",
-                pacienteID: "3",
-                profesionalID: "2",
-                fecha: "2018",
-                franjaHorariaID: "1125864895",
-                asistio: false,
-                cancelo: false
-            }]);
+            resolve (this.data.pacienteTurnos);
+        });
+    }
+
+    postTurno(turno) {
+        return new Promise((resolve, reject) => {
+            this.data.pacienteTurnos.push(turno);
+            resolve ("200");
         });
     }
 

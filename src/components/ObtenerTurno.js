@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 import { getJwt } from '../helpers/jwt'
+import { getUser } from '../helpers/user'
 
 import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
@@ -131,6 +132,7 @@ class ObtenerTurno extends Component {
             listaMedicosDisponibles: [],
             filtroMedico: "",
             mostrarCartelitoNoHayResultados: false,
+            turnoSeleccionado: {}
         }
 
         this.handleChangeEspecialista = this.handleChangeEspecialista.bind(this);
@@ -221,6 +223,15 @@ class ObtenerTurno extends Component {
 
     handleConfirmarTurno(event) {
         this.props.history.push('/');
+        proxy.postTurno({
+            id: "1",
+            pacienteID: getUser().id,
+            profesionalID: "2",
+            fecha: this.state.turnoSeleccionado.Fecha,
+            franjaHorariaID: "12",
+            asistio: false,
+            cancelo: false
+        })
         mytoast.success('Turno creado!');
     }
 
@@ -365,9 +376,9 @@ class ObtenerTurno extends Component {
               </TableRow>
             </TableHead>
             <TableBody>
-              {this.state.turnosDisponiblesFiltrados.map(item => {
+              {this.state.turnosDisponiblesFiltrados.map((item,index) => {
                 return (
-                  <TableRow key={item.id} className={classes.seleccionado} onClick={ (e) => this.modalHandleOpen()}>
+                  <TableRow key={item.id} className={classes.seleccionado} onClick={ (e) => this.modalHandleOpen(index)}>
                     <TableCell padding='none' style={{textAlign: "left"}} numeric>{item.Nombre + ' ' + item.Apellido}</TableCell>
                     <TableCell padding='none' style={{textAlign: "center"}} numeric>2018-11-13</TableCell>
                     <TableCell padding='none' style={{textAlign: "right"}} scope="row">{item.HoraDesde + ' a ' + item.HoraHasta}</TableCell>
@@ -387,10 +398,10 @@ class ObtenerTurno extends Component {
                     Confirmación de turno
                 </Typography>
                 <Typography variant="subtitle1" id="simple-modal-description">
-                    <p>Doctor: Khalil Moriello</p>
-                    <p>Especialidad: Cardiólogo</p>
-                    <p>Fecha: 2018-04-12</p>
-                    <p>Horario: 13:30</p>
+                    <p>Doctor: {this.state.turnoSeleccionado.Nombre + ' ' + this.state.turnoSeleccionado.Apellido} </p>
+                    <p>Especialidad: {this.state.turnoSeleccionado.Descripcion}</p>
+                    <p>Fecha: {this.state.turnoSeleccionado.Fecha}</p>
+                    <p>Horario: {this.state.turnoSeleccionado.HoraDesde + ' a ' + this.state.turnoSeleccionado.HoraHasta}</p>
                 </Typography>
                 <Button variant="contained" size="medium" className={classes.button} onClick={ () => this.modalHandleClose() }>
                     VOLVER
@@ -403,8 +414,9 @@ class ObtenerTurno extends Component {
         )
     }
     
-    modalHandleOpen = () => {
-        this.setState({ modalOpen: true });
+    modalHandleOpen = (index) => {
+        this.setState({ turnoSeleccionado: this.state.turnosDisponiblesFiltrados[index] },
+            () => { this.setState({ modalOpen: true })});
     };
 
     modalHandleClose = () => {

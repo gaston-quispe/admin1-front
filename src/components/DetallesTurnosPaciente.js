@@ -11,36 +11,51 @@ class DetallesTurnosPaciente extends Component {
         super(props)
         this.state = {
               turnos: [],
-              id: '',
+              /*id: '',
               pacienteID: '',
               profesionalID: '',
               fecha: '',
-              franjaHorariaID: '',
+              franjaHorariaID: '',*/
         }
     }
 
      componentDidMount() {
-          proxy.getPacienteTurnos(getUser().id).then((turnos)=>{
-            this.setState({id: turnos[0].id});
+        proxy.getPacienteTurnos(getUser().id).then((t)=>{
+            this.setState({turnos : t})
+            /*this.setState({id: turnos[0].id});
             this.setState({pacienteID: turnos[0].pacienteID});
             this.setState({profesionalID: turnos[0].profesionalID});
             this.setState({fecha: turnos[0].fecha});
             this.setState({franjaHorariaID: turnos[0].franjaHorariaID});
-            console.log(this.state.id);
-      });
+            console.log(this.state.id);*/
+        })
      }
 
-    render() {
+    listaDeTurnos () {
         return (
-            <Card>
-                <h2> Id turno: {this.state.id} </h2>
-                <h2> Id paciente: {this.state.pacienteID} </h2>
-                <h2> id medico: {this.state.profesionalID} </h2>
-                <h2> Fecha: {this.state.fecha} </h2>
-                <h2> Franja horaria: {this.state.franjaHorariaID} </h2>
+            <div>
+            {this.state.turnos.map(item => 
+                <Card key={item.id + item.fecha + item.franjaHorariaID} style={{marginTop: '5px', padding:'15px'}}>
+                    <p> Id turno: {item.id} </p>
+                    <p> Id paciente: {item.pacienteID} </p>
+                    <p> id medico: {item.profesionalID} </p>
+                    <p> Fecha: {item.fecha} </p>
+                    <p> Franja horaria: {item.franjaHorariaID} </p>
+                </Card>
+            )}
+            </div>
+        )
+    }
 
-            </Card>
-         )
+    render() {
+        if (!this.state.turnos || this.state.turnos.length === 0)
+            return (
+                <p>No tiene turnos reservados</p>
+            )
+        else
+            return (
+                this.listaDeTurnos()
+            )
     }
 
 }

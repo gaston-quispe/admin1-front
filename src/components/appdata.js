@@ -43,7 +43,25 @@ const appData = {
     },{
         id: "3",
         descipcion: "cardiologia",
-    }]
+    }],
+
+    pacienteTurnos: [/*{
+        id: "1",
+        pacienteID: "3",
+        profesionalID: "2",
+        fecha: "2018",
+        franjaHorariaID: "1125864895",
+        asistio: false,
+        cancelo: false
+    }, {
+        id: "1",
+        pacienteID: "3",
+        profesionalID: "2",
+        fecha: "2018",
+        franjaHorariaID: "1125864895",
+        asistio: false,
+        cancelo: false
+    }*/]
 
 }
 

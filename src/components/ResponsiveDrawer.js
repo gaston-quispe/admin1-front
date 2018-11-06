@@ -82,17 +82,26 @@ class ResponsiveDrawer extends React.Component {
     this.setState(state => ({ mobileOpen: false }));
   };
 
-  render() {
+
+    render() {
     const { classes, theme, children } = this.props;
     
-    const drawer = (
+    const drawer = !getUser() ? (
+      <div>
+        <div className={classes.toolbar} style={{marginTop: '15px', marginBottom: '-15px', textAlign: 'center', fontSize: '1.7em'}}>
+          Super turnero
+        </div>
+        <Divider />
+      </div>
+    )
+    : (
       <div>
         <div className={classes.toolbar} style={{marginTop: '15px', marginBottom: '-15px', textAlign: 'center', fontSize: '1.7em'}}>
           Super turnero
         </div>
         <Divider />
         <List>
-          
+          {/*
           <ListItem button key={"Ver datos Médico"}>
             <ListItemIcon>
               <AccountIcon />
@@ -104,7 +113,7 @@ class ResponsiveDrawer extends React.Component {
                 this.props.history.push('/DetallesMedico') }}
             />
           </ListItem>
-
+              */}
           <ListItem button key={"Obtener Turno"}>
             <ListItemIcon>
               <RecentActorsIcon />
@@ -158,7 +167,7 @@ class ResponsiveDrawer extends React.Component {
           />
         </ListItem>
       </div>
-    );
+    )
 
     return (
       <div className={classes.root}>
@@ -204,6 +213,7 @@ class ResponsiveDrawer extends React.Component {
               }}
             >
               {drawer}
+              
             </Drawer>
           </Hidden>
           <Hidden xsDown implementation="css">

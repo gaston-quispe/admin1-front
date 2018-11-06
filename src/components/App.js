@@ -27,13 +27,13 @@ class App extends Component {
               <Switch>
                 <ResponsiveDrawer titles={appBarTitles}>
                   <Route path="/Login" component={Login}/>
-                  {/*<AuthenticatedComponent>*/}
+                  <AuthenticatedComponent>
                     <Route exact path="/" component={Home} />
                     <Route path="/ObtenerTurno" component={ObtenerTurno} />
                     <Route path="/MisTurnos" component={MisTurnos} />
                     <Route path="/DetallesMedico" component={DetallesMedico} />
                     <Route path="/DetallesTurnosPaciente" component={DetallesTurnosPaciente} />
-                  {/*</AuthenticatedComponent>*/}
+                  </AuthenticatedComponent>
 
                 </ResponsiveDrawer>
               </Switch>
