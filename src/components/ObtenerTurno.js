@@ -277,7 +277,7 @@ class ObtenerTurno extends Component {
                 <FormControl className={classes.formControl}>
                     <TextField
                         id="FechaInicial"
-                        label="FechaInicial"
+                        label="Fecha Inicial"
                         type="date"
                         onChange={(e) =>this.handleChangeFechaInicial(e)}
                         //defaultValue="2017-05-24"
@@ -292,7 +292,7 @@ class ObtenerTurno extends Component {
                 <FormControl className={classes.formControl}>
                     <TextField
                         id="FechaFinal"
-                        label="FechaFinal"
+                        label="Fecha Final"
                         type="date"
                         onChange={(e) =>this.handleChangeFechaFinal(e)}
                         //defaultValue="2017-05-24"
