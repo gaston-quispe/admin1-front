@@ -11,31 +11,35 @@ class DetallesTurnosPaciente extends Component {
         super(props)
         this.state = {
               turnos: [],
-              id: [],
-              pacienteID: [],
-              profesionalID: [],
-              fecha: [],
-              franjaHorariaID: [],
+              id: '',
+              pacienteID: '',
+              profesionalID: '',
+              fecha: '',
+              franjaHorariaID: '',
         }
     }
 
      componentDidMount() {
           proxy.getPacienteTurnos(getUser().id).then((turnos)=>{
-            this.setState({id: turnos.id});
-            this.setState({id: turnos.id});
-            this.setState({pacienteID: turnos.pacienteID});
-            this.setState({profesionalID: turnos.profesionalID});
-            this.setState({fecha: turnos.fecha});
-            this.setState({franjaHorariaID: turnos.franjaHorariaID});
+            this.setState({id: turnos[0].id});
+            this.setState({pacienteID: turnos[0].pacienteID});
+            this.setState({profesionalID: turnos[0].profesionalID});
+            this.setState({fecha: turnos[0].fecha});
+            this.setState({franjaHorariaID: turnos[0].franjaHorariaID});
             console.log(this.state.id);
       });
      }
 
     render() {
         return (
+            <Card>
+                <h2> Id turno: {this.state.id} </h2>
+                <h2> Id paciente: {this.state.pacienteID} </h2>
+                <h2> id medico: {this.state.profesionalID} </h2>
+                <h2> Fecha: {this.state.fecha} </h2>
+                <h2> Franja horaria: {this.state.franjaHorariaID} </h2>
 
-            
-            <h2> {this.state.turnos} </h2>
+            </Card>
          )
     }
 
