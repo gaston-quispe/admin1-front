@@ -29,7 +29,7 @@ class Login extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            email: '',
+            dni: '',
             password: ''
         }
 
@@ -46,13 +46,13 @@ class Login extends Component {
 
     submit(e) {
         e.preventDefault();
-        proxy.login(this.state.email, this.state.password)
+        proxy.login(this.state.dni, this.state.password)
             .then(res => {
                 setJwt(res.data.token)
                 setUser(res.data.user)
                 this.props.history.push('/')
             })
-            .catch(err => console.log(`No se pudo autenticar: ${err}`))
+            .catch(err => console.log(`No se pudo autenticar: ${err.msg}`))
     }
 
     render() {
@@ -67,11 +67,11 @@ class Login extends Component {
 
                     <form onSubmit={e=> this.submit(e)}>
                         <TextField
-                            id="email"
-                            name="email"
-                            label="Email"
-                            value={this.state.email}
-                            type="email"
+                            id="dni"
+                            name="dni"
+                            label="Usuario"
+                            value={this.state.dni}
+                            type="number"
                             onChange={e => this.change(e)}
                             margin="normal"
                         />

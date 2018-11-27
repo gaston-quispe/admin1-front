@@ -1,13 +1,15 @@
 import React, { Component } from 'react';  
 
 class Home extends Component {
-    constructor(props) {
-        super(props)
-    }
+    //constructor(props) {
+    //    super(props)
+    //}
 
     render() {
         return (
-            <h1>------home------</h1>
+            <div style={{textAlign:'center', marginTop:'45px'}}>
+                <h1>HOME</h1>
+            </div>
          )
      }
 

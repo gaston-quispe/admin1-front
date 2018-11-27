@@ -1,8 +1,9 @@
+
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
 //import { getJwt } from '../helpers/jwt'
-import { getUser } from '../helpers/user'
+//import { getUser } from '../helpers/user'
 
 import TextField from '@material-ui/core/TextField';
 import Input from '@material-ui/core/Input';
@@ -25,7 +26,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
 // toast
-import { mytoast } from '../helpers/mytoast'
+//import { mytoast } from '../helpers/mytoast'
 
 const styles = theme => ({
 
@@ -64,7 +65,7 @@ const styles = theme => ({
     }
 });
 
-class MisTurnos extends Component {
+class BuscarTurnoParaSolicitar extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -72,7 +73,7 @@ class MisTurnos extends Component {
             idEspecialista : '',
             //idMedico: '',
             nombre: '',
-            fechaInicial: moment().subtract(2,'month').format("YYYY-MM-DD"),
+            fechaInicial: moment().format("YYYY-MM-DD"),
             fechaFinal: moment().add(2,'month').format("YYYY-MM-DD"),
             turnosDisponibles: [],
             turnosDisponiblesFiltrados: [],
@@ -97,7 +98,7 @@ class MisTurnos extends Component {
     }
 
     cargarTurnosDisponibles() {
-        proxy.getMisTurnos(this.state.fechaInicial, this.state.fechaFinal)
+        proxy.getTurnosDisponibles(this.state.fechaInicial, this.state.fechaFinal)
             .then(turnos => this.setState({turnosDisponibles: turnos}, this.filtrarTurnos));
     }
 
@@ -173,7 +174,7 @@ class MisTurnos extends Component {
         this.setState(
             {fechaFinal:  event.target.value}, this.cargarTurnosDisponibles)
     }
-
+/*
     handleConfirmarTurno(event) {
         this.props.history.push('/');
         proxy.postTurno({
@@ -187,11 +188,12 @@ class MisTurnos extends Component {
         })
         mytoast.success('Turno creado!');
     }
+*/
     /////////////// REDIRECCION ///////////////
-    gotoDetalleTurnoPaciente(turno) {
-        //this.props.history.push('/DetalleTurnoPaciente')
+    gotoConfirmarSolicitudDeTurno(turno) {
+        //this.props.history.push('/ConfirmarSolicitudDeTurno')
         this.props.history.push({
-            pathname: '/DetalleTurnoPaciente',
+            pathname: '/ConfirmarSolicitudDeTurno',
             state: { turno: turno }
         })
     }
@@ -290,7 +292,7 @@ class MisTurnos extends Component {
                 <TableBody>
                     {this.state.turnosDisponiblesFiltrados.map((turno, index) => {
                         return (
-                        <TableRow key={turno.id} className={classes.seleccionado} onClick={ (e) => this.gotoDetalleTurnoPaciente(turno)}>
+                        <TableRow key={turno.id} className={classes.seleccionado} onClick={ (e) => this.gotoConfirmarSolicitudDeTurno(turno)}>
                             <TableCell padding='none' style={{textAlign: "left"}} numeric>{turno.Fecha}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}} scope="row">{turno.HoraDesde + ' a ' + turno.HoraHasta}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}}>{turno.medico.Especialidad}</TableCell>
@@ -321,4 +323,4 @@ class MisTurnos extends Component {
      }
 }
 
-export default withStyles(styles)(withRouter(MisTurnos));
+export default withStyles(styles)(withRouter(BuscarTurnoParaSolicitar));

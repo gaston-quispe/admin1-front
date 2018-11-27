@@ -1,4 +1,4 @@
-import Axios from 'axios';
+//import Axios from 'axios';
 import appData from './appdata';
 
 class Proxy {
@@ -6,17 +6,32 @@ class Proxy {
         this.data = appData;
     }
   
-    login(email, password) {
+    login(dni, password) {
         return new Promise((resolve, reject) => {
-            resolve ({
-                data: {
-                user: {
-                        id: '1',
-                        rol: 'paciente'
-                    },
-                    token: "xxxxx.yyyyy.zzzzz"
-                }
-            });
+            if (dni === '777' && password === '777') {
+                resolve (
+                    {
+                        data: {
+                        user: {
+                                id: '1',
+                                rol: 'paciente',
+                                nombre: 'Pepe',
+                                apellido: 'Argento',
+                                sexo: 'masculino',
+                                mail: 'pepe@gmail.com',
+                                dni: '777',
+                                fechaNacimiento: '1990-12-25',
+                                fechaAltaRegistro: '2016-07-13',
+                            },
+                            token: "xxxxx.yyyyy.zzzzz"
+                        }
+                    }
+                );
+            }
+            else
+                reject (
+                    {msg: 'Usuario o password incorrecto!'}
+                )
         });
 
         /* Comentado hasta que exista back
@@ -80,6 +95,47 @@ class Proxy {
         });
     }
 
+    getTurnosDisponibles(fechaInicial, fechaFinal) {
+        return new Promise((resolve, reject) => {
+            resolve (
+                this.data.turnosDisponibles.filter((turno) => {
+                    return fechaInicial <= turno.Fecha && turno.Fecha <= fechaFinal;
+                })            
+            );
+        });
+    }
+
+    postAlmacenarTurno(turno) {
+        return new Promise((resolve, reject) => {
+            resolve (this.data.pacienteTurnos.push(turno));
+        });
+    }
+
+    eliminarTurnoDisponible(idTurno) {
+        let turnos2 = this.data.turnosDisponibles.filter(t => t.id !== idTurno)
+        return new Promise((resolve, reject) => {
+            resolve (this.data.turnosDisponibles = turnos2);
+        });
+    }
+
+    postCancelarTurno(turno) {
+        let id_eliminar = turno.id;
+        let turnos2 = this.data.pacienteTurnos.filter(t => t.id !== id_eliminar)
+        return new Promise((resolve, reject) => {
+            resolve (this.data.pacienteTurnos = turnos2);
+        });
+    }
+
+    getMisTurnos(fechaInicial, fechaFinal) {
+        return new Promise((resolve, reject) => {
+            resolve (
+                this.data.pacienteTurnos.filter((turno) => {
+                    return fechaInicial <= turno.Fecha && turno.Fecha <= fechaFinal;
+                })            
+            );
+        });
+    }
+
     getEspecialidadesTurnosDisponibles(idEspecialidad, fecha) {
         return new Promise((resolve, reject) => {
             resolve (
@@ -108,290 +164,6 @@ class Proxy {
                     HoraDesde: "17:30",
                     HoraHasta: "18:00"
                 }]
-            );
-        });
-    }
-
-    getEspecialidadesTurnosDisponiblesEnRangoDeFechas(idEspecialidad, fechaInicial, fechaFinal) {
-        return new Promise((resolve, reject) => {
-            resolve (
-                [{
-                    id: "1",
-                    Descripcion: "Pediatria",
-                    Apellido: "Moriello",
-                    Nombre: "Khalil",
-                    Fecha: '2018-09-13',
-                    HoraDesde : "16:00",
-                    HoraHasta: "16:30",
-                },{
-                    id: "2",
-                    Descripcion: "Pediatria",
-                    Apellido: "Moriello",
-                    Nombre: "Khalil",
-                    Fecha: '2018-11-06',
-                    HoraDesde: "16:30",
-                    HoraHasta: "17:00"
-                },{
-                    id: "3",
-                    Descripcion: "Pediatria",
-                    Apellido: "Moriello",
-                    Nombre: "Khalil",
-                    Fecha: '2018-12-06',
-                    HoraDesde: "17:00",
-                    HoraHasta: "17:30"
-                },{
-                    id:"4",
-                    Descripcion: "Pediatria",
-                    Apellido: "Perez",
-                    Nombre: "Sergio",
-                    Fecha: '2018-11-23',
-                    HoraDesde: "09:30",
-                    HoraHasta: "10:00"
-                },
-                {
-                    id:"5",
-                    Descripcion: "Cardiologo",
-                    Apellido: "Flores",
-                    Nombre: "Osvaldo",
-                    Fecha: '2018-11-11',
-                    HoraDesde: "17:30",
-                    HoraHasta: "18:00"
-                },
-                {
-                    id:"6",
-                    Descripcion: "Cardiologo",
-                    Apellido: "Flores",
-                    Nombre: "Osvaldo",
-                    Fecha: '2018-12-12',
-                    HoraDesde: "18:00",
-                    HoraHasta: "18:30"
-                },
-                {
-                    id:"7",
-                    Descripcion: "Cardiologo",
-                    Apellido: "Flores",
-                    Nombre: "Osvaldo",
-                    Fecha: '2018-12-16',
-                    HoraDesde: "12:30",
-                    HoraHasta: "13:00"
-                },
-                {
-                    id:"8",
-                    Descripcion: "Otorrino",
-                    Apellido: "Garcia",
-                    Nombre: "Pedro",
-                    Fecha: '2019-01-03',
-                    HoraDesde: "12:30",
-                    HoraHasta: "13:30"
-                },
-                {
-                    id:"9",
-                    Descripcion: "Otorrino",
-                    Apellido: "Flores",
-                    Nombre: "Pedro",
-                    Fecha: '2018-12-11',
-                    HoraDesde: "12:30",
-                    HoraHasta: "13:00"
-                },
-                {
-                    id:"10",
-                    Descripcion: "Pediatria",
-                    Apellido: "Sandiego",
-                    Nombre: "Carmen",
-                    Fecha: '2018-12-11',
-                    HoraDesde: "13:00",
-                    HoraHasta: "13:30"
-                },
-                {
-                    id:"11",
-                    Descripcion: "Pediatria",
-                    Apellido: "Flores",
-                    Nombre: "Pedro",
-                    Fecha: '2018-12-11',
-                    HoraDesde: "13:30",
-                    HoraHasta: "14:00"
-                },
-                {
-                    id:"12",
-                    Descripcion: "Otorrino",
-                    Apellido: "Geronte",
-                    Nombre: "Rosto",
-                    Fecha: '2019-01-04',
-                    HoraDesde: "12:30",
-                    HoraHasta: "13:30"
-                },
-                {
-                    id:"13",
-                    Descripcion: "Otorrino",
-                    Apellido: "De Control",
-                    Nombre: "Individuo",
-                    Fecha: '2018-12-12',
-                    HoraDesde: "13:00",
-                    HoraHasta: "13:30"
-                },
-                {
-                    id:"14",
-                    Descripcion: "Pediatria",
-                    Apellido: "Ginebra",
-                    Nombre: "Gin",
-                    Fecha: '2018-12-11',
-                    HoraDesde: "13:00",
-                    HoraHasta: "13:30"
-                },
-                {
-                    id:"15",
-                    Descripcion: "Pediatria",
-                    Apellido: "Maura",
-                    Nombre: "Ana",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "14:30",
-                    HoraHasta: "14:30"
-                },
-                {
-                    id:"16",
-                    Descripcion: "Pediatria",
-                    Apellido: "Maura",
-                    Nombre: "Ana",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "15:00",
-                    HoraHasta: "15:30"
-                },
-                {
-                    id:"17",
-                    Descripcion: "Otorrino",
-                    Apellido: "Bailo Yo",
-                    Nombre: "Aquiles",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "17:00",
-                    HoraHasta: "17:30"
-                },
-                {
-                    id:"18",
-                    Descripcion: "Otorrino",
-                    Apellido: "De Arco",
-                    Nombre: "Juana",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "18:00",
-                    HoraHasta: "18:30"
-                },
-                {
-                    id:"19",
-                    Descripcion: "Otorrino",
-                    Apellido: "Corleone",
-                    Nombre: "Vito",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "20:00",
-                    HoraHasta: "21:30"
-                },
-                {
-                    id:"20",
-                    Descripcion: "Cardiologo",
-                    Apellido: "Segovia",
-                    Nombre: "Luisa",
-                    Fecha: '2018-12-15',
-                    HoraDesde: "17:00",
-                    HoraHasta: "17:30"
-                },
-                {
-                    id:"21",
-                    Descripcion: "Cardiologo",
-                    Apellido: "Segovia",
-                    Nombre: "Luisa",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "17:30",
-                    HoraHasta: "18:00"
-                },
-                {
-                    id:"22",
-                    Descripcion: "Cardiologo",
-                    Apellido: "Segovia",
-                    Nombre: "Luisa",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "18:30",
-                    HoraHasta: "19:00"
-                },
-                {
-                    id:"23",
-                    Descripcion: "Cardiologo",
-                    Apellido: "Montana",
-                    Nombre: "Tony",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "18:30",
-                    HoraHasta: "19:00"
-                },
-                {
-                    id:"24",
-                    Descripcion: "Otorrino",
-                    Apellido: "De Arco",
-                    Nombre: "Juana",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "18:30",
-                    HoraHasta: "19:00"
-                },
-                {
-                    id:"25",
-                    Descripcion: "Otorrino",
-                    Apellido: "De Arco",
-                    Nombre: "Juana",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "19:00",
-                    HoraHasta: "19:30"
-                },
-                {
-                    id:"26",
-                    Descripcion: "Otorrino",
-                    Apellido: "Garcia",
-                    Nombre: "Pedro",
-                    Fecha: '2019-01-03',
-                    HoraDesde: "14:00",
-                    HoraHasta: "14:30"
-                },
-                {
-                    id:"27",
-                    Descripcion: "Otorrino",
-                    Apellido: "Flores",
-                    Nombre: "Pedro",
-                    Fecha: '2018-12-11',
-                    HoraDesde: "13:00",
-                    HoraHasta: "13:30"
-                },
-                {
-                    id:"28",
-                    Descripcion: "Otorrino",
-                    Apellido: "Flores",
-                    Nombre: "Pedro",
-                    Fecha: '2018-12-11',
-                    HoraDesde: "13:30",
-                    HoraHasta: "14:00"
-                },
-                {
-                    id:"29",
-                    Descripcion: "Cardiologo",
-                    Apellido: "Segovia",
-                    Nombre: "Luisa",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "19:00",
-                    HoraHasta: "19:30"
-                },
-                {
-                    id:"30",
-                    Descripcion: "Otorrino",
-                    Apellido: "Geronte",
-                    Nombre: "Rosto",
-                    Fecha: '2019-01-04',
-                    HoraDesde: "15:00",
-                    HoraHasta: "15:30"
-                },
-                {
-                    id:"31",
-                    Descripcion: "Otorrino",
-                    Apellido: "Bailo Yo",
-                    Nombre: "Aquiles",
-                    Fecha: '2018-11-30',
-                    HoraDesde: "18:00",
-                    HoraHasta: "18:30"
-                },
-                ]
             );
         });
     }

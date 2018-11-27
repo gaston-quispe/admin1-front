@@ -17,9 +17,9 @@ import ListItemText from "@material-ui/core/ListItemText";
 import RecentActorsIcon from "@material-ui/icons/RecentActors";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
-import AccountIcon from "@material-ui/icons/AccountCircle";
 import { withRouter } from 'react-router-dom';
-import { getJwt, deleteJwt } from '../helpers/jwt';
+//import { getJwt} from '../helpers/jwt';
+import { deleteJwt } from '../helpers/jwt';
 import { deleteUser } from '../helpers/user';
 import { getUser } from '../helpers/user';
 
@@ -122,10 +122,10 @@ class ResponsiveDrawer extends React.Component {
               primary={"Solicitar Turno"}
               onClick={()=>{
                 this.handleDrawerClose();
-                this.props.history.push('/ObtenerTurno')}}
+                this.props.history.push('/BuscarTurnoParaSolicitar')}}
               
               /*onClick={()=>{
-              getJwt() ? this.props.history.push('/ObtenerTurno') : this.props.history.push('/Login');}} */
+              getJwt() ? this.props.history.push('/BuscarTurnoParaSolicitar') : this.props.history.push('/Login');}} */
             />
           </ListItem>
 
@@ -136,10 +136,10 @@ class ResponsiveDrawer extends React.Component {
             <ListItemText
               primary={"Mis Turnos"}
               onClick={()=>{
-                console.log("rol: " + getUser().rol)
-                if(getUser().rol == 'paciente'){
+                //console.log("rol: " + getUser().rol)
+                if(getUser().rol === 'paciente'){
                     this.handleDrawerClose();  
-                    this.props.history.push('/DetallesTurnosPaciente')
+                    this.props.history.push('/MisTurnos')
                 } else{
                     this.handleDrawerClose();  
                     this.props.history.push('/DetallesMedico')

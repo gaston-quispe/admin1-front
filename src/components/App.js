@@ -2,12 +2,14 @@ import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import Home from './Home';
 import Login from './Login';
-import ObtenerTurno from './ObtenerTurno';
+import BuscarTurnoParaSolicitar from './BuscarTurnoParaSolicitar';
+import ConfirmarSolicitudDeTurno from "./ConfirmarSolicitudDeTurno";
 import AuthenticatedComponent from './AuthenticatedComponent';
 import ResponsiveDrawer from "./ResponsiveDrawer";
-import MisTurnos from "./MisTurnos"
-import DetallesMedico from "./DetallesMedico"
-import DetallesTurnosPaciente from "./DetallesTurnosPaciente"
+import MisTurnos from "./MisTurnos";
+import DetallesMedico from "./DetallesMedico";
+import DetalleTurnoPaciente from "./DetalleTurnoPaciente";
+
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css'
@@ -15,9 +17,10 @@ import './App.css'
 const appBarTitles = {
     "/" : "Home",
     "/Login" : "Login",
-    "/ObtenerTurno" : "Obtener Turno",
+    "/BuscarTurnoParaSolicitar" : "Solicitud de Turno",
+    "/ConfirmarSolicitudDeTurno" : "Confirmar Solicitud",
     "/MisTurnos" : "Mis Turnos",
-    "/DetallesTurnosPaciente" : "Detalles turnos paciente",
+    "/DetalleTurnoPaciente" : "Detalle Turno",
     "/DetallesMedico" : "Detalles medico",
 }
 class App extends Component {
@@ -30,10 +33,11 @@ class App extends Component {
                   <Route path="/Login" component={Login}/>
                   <AuthenticatedComponent>
                     <Route exact path="/" component={Home} />
-                    <Route path="/ObtenerTurno" component={ObtenerTurno} />
+                    <Route path="/BuscarTurnoParaSolicitar" component={BuscarTurnoParaSolicitar} />
+                    <Route path="/ConfirmarSolicitudDeTurno" component={ConfirmarSolicitudDeTurno} />
                     <Route path="/MisTurnos" component={MisTurnos} />
                     <Route path="/DetallesMedico" component={DetallesMedico} />
-                    <Route path="/DetallesTurnosPaciente" component={DetallesTurnosPaciente} />
+                    <Route path="/DetalleTurnoPaciente" component={DetalleTurnoPaciente} />
                   </AuthenticatedComponent>
 
                 </ResponsiveDrawer>
