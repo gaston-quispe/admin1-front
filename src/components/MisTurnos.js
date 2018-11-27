@@ -70,9 +70,10 @@ class MisTurnos extends Component {
         this.state = {
             modalOpen: false,
             idEspecialista : '',
+            filtroEstado: '',
             //idMedico: '',
             nombre: '',
-            fechaInicial: moment().subtract(2,'month').format("YYYY-MM-DD"),
+            fechaInicial: moment().format("YYYY-MM-DD"),
             fechaFinal: moment().add(2,'month').format("YYYY-MM-DD"),
             turnosDisponibles: [],
             turnosDisponiblesFiltrados: [],
@@ -142,11 +143,21 @@ class MisTurnos extends Component {
         })
     }
 
-    filtrarTurnos(callbackLuegoDeFiltar) {
+    filtrarXEstado(listaTurnos) {
+        if (this.state.filtroEstado === "")
+            return listaTurnos;
+        return listaTurnos.filter((turno) => {
+            console.log(this.state.filtroEstado);
+            return this.state.filtroEstado === turno.Estado
+        })
+    }
+
+    filtrarTurnos() {
         let filtrados = this.state.turnosDisponibles;
         
         filtrados = this.filtrarXEspecialidad(filtrados);
         filtrados = this.filtrarXMedico(filtrados);
+        filtrados = this.filtrarXEstado(filtrados);
         this.setState({turnosDisponiblesFiltrados: filtrados}, () => {
             this.actualizarEspecialidadesDisponibles();
             this.actualizarMedicosDisponibles();
@@ -172,6 +183,11 @@ class MisTurnos extends Component {
     handleChangeFechaFinal(event) {
         this.setState(
             {fechaFinal:  event.target.value}, this.cargarTurnosDisponibles)
+    }
+
+    handleChangeEstado (event) {
+        this.setState(
+            {filtroEstado:  event.target.value}, this.cargarTurnosDisponibles)
     }
 
     handleConfirmarTurno(event) {
@@ -264,6 +280,25 @@ class MisTurnos extends Component {
                         {this.state.medicosDisponibles.map(item =>
                             <MenuItem key={item} value={item}>{item}</MenuItem>
                         )}
+                    </Select>
+                </FormControl>
+                <FormControl className={classes.formControl}>
+                    <InputLabel shrink htmlFor="filtroEstado-label-placeholder">
+                        Estado
+                    </InputLabel>
+                    <Select
+                        value={this.state.filtroEstado}
+                        onChange={(e) =>this.handleChangeEstado(e)}
+                        input={<Input name="filtroEstado" id="filtroEstado-label-placeholder" />}
+                        displayEmpty
+                        //name="idMedico"
+                        className={classes.selectEmpty}
+                    >
+                        <MenuItem value=""><em>Sin filtro</em></MenuItem>
+                        <MenuItem key='ASISTIO' value='ASISTIO'>ASISTIO</MenuItem>
+                        <MenuItem key='CANCELADO' value='CANCELADO'>CANCELADO</MenuItem>
+                        <MenuItem key='VENIDERO' value='VENIDERO'>VENIDERO</MenuItem>
+                        
                     </Select>
                 </FormControl>
         </div>)
