@@ -113,14 +113,14 @@ class BuscarTurnoParaSolicitar extends Component {
             return turno.medico.Especialidad;
         })
         
-        this.setState({especialidadesDisponibles: this.eliminarDuplicados(especialidades)})
+        this.setState({especialidadesDisponibles: this.eliminarDuplicados(especialidades).sort()})
     }
 
     actualizarMedicosDisponibles() {
         let nombres = this.state.turnosDisponibles.map((turno) => {
             return turno.medico.Nombre + ' ' + turno.medico.Apellido;
         })
-        this.setState({medicosDisponibles: this.eliminarDuplicados(nombres)})
+        this.setState({medicosDisponibles: this.eliminarDuplicados(nombres).sort()})
     }
 
     /////////////// FILTROS ///////////////
