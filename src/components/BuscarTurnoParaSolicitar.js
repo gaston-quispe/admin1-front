@@ -115,8 +115,8 @@ class BuscarTurnoParaSolicitar extends Component {
     cargarTurnosDisponibles() {
         proxy.getTurnosDisponibles(this.state.fechaInicial, this.state.fechaFinal)
             .then(
-                turnos => {
-                    this.setState({turnosDisponibles: this.ordenarTurnos(turnos)}, this.filtrarTurnos)
+                respuesta => {
+                    this.setState({turnosDisponibles: this.ordenarTurnos(respuesta.data)}, this.filtrarTurnos)
                 }
             );
     }
@@ -129,7 +129,7 @@ class BuscarTurnoParaSolicitar extends Component {
 
     actualizarEspecialidadesDisponibles() {
         let especialidades = this.state.turnosDisponibles.map((turno) => {
-            return turno.medico.Especialidad;
+            return turno.Descipcion;
         })
         
         this.setState({especialidadesDisponibles: this.eliminarDuplicados(especialidades).sort()})
@@ -137,7 +137,7 @@ class BuscarTurnoParaSolicitar extends Component {
 
     actualizarMedicosDisponibles() {
         let nombres = this.state.turnosDisponibles.map((turno) => {
-            return turno.medico.Nombre + ' ' + turno.medico.Apellido;
+            return turno.Nombre + ' ' + turno.Apellido;
         })
         this.setState({medicosDisponibles: this.eliminarDuplicados(nombres).sort()})
     }
@@ -158,7 +158,7 @@ class BuscarTurnoParaSolicitar extends Component {
             return listaTurnos;
 
         return listaTurnos.filter((turno) => {
-            return this.state.idEspecialista === turno.medico.Especialidad
+            return this.state.idEspecialista === turno.medico.Descripcion
         })
     }
 
@@ -201,6 +201,16 @@ class BuscarTurnoParaSolicitar extends Component {
             pathname: '/ConfirmarSolicitudDeTurno',
             state: { turno: turno }
         })
+    }
+    /////////////// UTIL ///////////////
+    concatenarCampos(object) {
+        var res = ""
+        for (var key in  object) res += object[key]
+        return res;
+    }
+
+    formatearFecha(fecha) {
+        return moment('2018-11-22', 'YYYY-MM-DD').format('DD/MM/YYYY')
     }
 
     /////////////// RENDER ///////////////
@@ -295,11 +305,11 @@ class BuscarTurnoParaSolicitar extends Component {
                 <TableBody>
                     {this.state.turnosDisponiblesFiltrados.map((turno, index) => {
                         return (
-                        <TableRow key={turno.id} className={classes.seleccionado} onClick={ (e) => this.gotoConfirmarSolicitudDeTurno(turno)}>
-                            <TableCell padding='none' style={{textAlign: "left"}} numeric>{turno.Fecha}</TableCell>
+                        <TableRow key={this.concatenarCampos(turno)} className={classes.seleccionado} onClick={ (e) => this.gotoConfirmarSolicitudDeTurno(turno)}>
+                            <TableCell padding='none' style={{textAlign: "left"}}>{this.formatearFecha(this.state.fechaInicial)}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}} scope="row">{turno.HoraDesde + ' a ' + turno.HoraHasta}</TableCell>
-                            <TableCell padding='none' style={{textAlign: "center"}}>{turno.medico.Especialidad}</TableCell>
-                            <TableCell padding='none' style={{textAlign: "right"}} numeric>{turno.medico.Nombre + ' ' + turno.medico.Apellido}</TableCell>   
+                            <TableCell padding='none' style={{textAlign: "center"}}>{turno.Descripcion}</TableCell>
+                            <TableCell padding='none' style={{textAlign: "right"}} numeric>{turno.Nombre + ' ' + turno.Apellido}</TableCell>   
                         </TableRow>
                         );
                     })}

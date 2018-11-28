@@ -49,7 +49,7 @@ class ConfirmarSolicitudDeTurno extends Component {
                     <li><b>Fecha:</b> {this.props.location.state.turno.Fecha}</li>
                     <li><b>Horario:</b> {this.props.location.state.turno.HoraDesde + ' a ' + this.props.location.state.turno.HoraHasta}</li>
                     <li><b>Consultorio:</b> {this.props.location.state.turno.Consultorio}</li>
-                    <li><b>Especialidad:</b> {this.props.location.state.turno.medico.Especialidad}</li>
+                    <li><b>Especialidad:</b> {this.props.location.state.turno.Descripcion}</li>
                     <li><b>Datos del Paciente:</b></li>
                     <ul>
                         <li><b>Nombre:</b> {this.state.user.nombre}</li>
@@ -58,9 +58,9 @@ class ConfirmarSolicitudDeTurno extends Component {
                     </ul>
                     <li><b>Datos del Medico:</b></li>
                     <ul>
-                        <li><b>Nombre:</b> {this.props.location.state.turno.medico.Nombre}</li>
-                        <li><b>Apellido:</b> {this.props.location.state.turno.medico.Apellido}</li>
-                        <li><b>Matricula:</b> {this.props.location.state.turno.medico.Matricula}</li>                
+                        <li><b>Nombre:</b> {this.props.location.state.turno.Nombre}</li>
+                        <li><b>Apellido:</b> {this.props.location.state.turno.Apellido}</li>
+                        <li><b>Matricula:</b> {this.props.location.state.turno.Matricula}</li>                
                     </ul>
                 </ul>
                 <div style={{textAlign: 'center'}}>
