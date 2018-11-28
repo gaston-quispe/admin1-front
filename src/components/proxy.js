@@ -104,7 +104,17 @@ class Proxy {
             );
         });
     }
-
+/*
+    getTurnosDisponibles(fechaInicial, fechaFinal) {
+        return new Promise((resolve, reject) => {
+            resolve (
+                this.data.turnosDisponibles.filter((turno) => {
+                    return fechaInicial <= turno.Fecha && turno.Fecha <= fechaFinal;
+                })            
+            );
+        });
+    }
+    */
     postAlmacenarTurno(turno) {
         return new Promise((resolve, reject) => {
             resolve (this.data.pacienteTurnos.push(turno));

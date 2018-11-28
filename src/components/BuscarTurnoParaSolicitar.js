@@ -97,9 +97,28 @@ class BuscarTurnoParaSolicitar extends Component {
         this.cargarTurnosDisponibles();
     }
 
+    ordenarTurnos(listaTurnos) {
+        return listaTurnos.sort( (t1, t2) => {
+            if (t1.Fecha > t2.Fecha)
+                return 1;
+            else if (t1.Fecha < t2.Fecha)
+                return -1;
+            else if (t1.HoraDesde > t2.HoraHasta)
+                return 1;
+            else if (t1.HoraDesde < t2.HoraHasta)
+                return -1;
+            else
+                return 0;
+        })
+    }
+
     cargarTurnosDisponibles() {
         proxy.getTurnosDisponibles(this.state.fechaInicial, this.state.fechaFinal)
-            .then(turnos => this.setState({turnosDisponibles: turnos}, this.filtrarTurnos));
+            .then(
+                turnos => {
+                    this.setState({turnosDisponibles: this.ordenarTurnos(turnos)}, this.filtrarTurnos)
+                }
+            );
     }
 
     eliminarDuplicados(lista) {
@@ -113,14 +132,14 @@ class BuscarTurnoParaSolicitar extends Component {
             return turno.medico.Especialidad;
         })
         
-        this.setState({especialidadesDisponibles: this.eliminarDuplicados(especialidades)})
+        this.setState({especialidadesDisponibles: this.eliminarDuplicados(especialidades).sort()})
     }
 
     actualizarMedicosDisponibles() {
         let nombres = this.state.turnosDisponibles.map((turno) => {
             return turno.medico.Nombre + ' ' + turno.medico.Apellido;
         })
-        this.setState({medicosDisponibles: this.eliminarDuplicados(nombres)})
+        this.setState({medicosDisponibles: this.eliminarDuplicados(nombres).sort()})
     }
 
     /////////////// FILTROS ///////////////
@@ -174,21 +193,7 @@ class BuscarTurnoParaSolicitar extends Component {
         this.setState(
             {fechaFinal:  event.target.value}, this.cargarTurnosDisponibles)
     }
-/*
-    handleConfirmarTurno(event) {
-        this.props.history.push('/');
-        proxy.postTurno({
-            id: "1",
-            pacienteID: getUser().id,
-            profesionalID: "2",
-            fecha: this.state.turnoSeleccionado.Fecha,
-            franjaHorariaID: "12",
-            asistio: false,
-            cancelo: false
-        })
-        mytoast.success('Turno creado!');
-    }
-*/
+
     /////////////// REDIRECCION ///////////////
     gotoConfirmarSolicitudDeTurno(turno) {
         //this.props.history.push('/ConfirmarSolicitudDeTurno')
@@ -208,7 +213,6 @@ class BuscarTurnoParaSolicitar extends Component {
                         label="Fecha Inicial"
                         type="date"
                         onChange={(e) =>this.handleChangeFechaInicial(e)}
-                        //defaultValue="2017-05-24"
                         value={this.state.fechaInicial}
                         className={classes.textField}
                         InputLabelProps={{
@@ -223,7 +227,6 @@ class BuscarTurnoParaSolicitar extends Component {
                         label="Fecha Final"
                         type="date"
                         onChange={(e) =>this.handleChangeFechaFinal(e)}
-                        //defaultValue="2017-05-24"
                         value={this.state.fechaFinal}
                         className={classes.textField}
                         InputLabelProps={{
@@ -231,6 +234,8 @@ class BuscarTurnoParaSolicitar extends Component {
                         }}
                     />
                 </FormControl>
+
+                {/*
                 <FormControl className={classes.formControl}>
                     <InputLabel shrink htmlFor="idEspecialista-label-placeholder">
                         Especialidad
@@ -240,7 +245,6 @@ class BuscarTurnoParaSolicitar extends Component {
                         onChange={(e) =>this.handleChangeEspecialista(e)}
                         input={<Input name="idEspecialista" id="idEspecialista-label-placeholder" />}
                         displayEmpty
-                        //name="idEspecialista"
                         className={classes.selectEmpty}
                     >
                         <MenuItem value=""><em>Sin Filtro</em></MenuItem>
@@ -248,7 +252,6 @@ class BuscarTurnoParaSolicitar extends Component {
                             <MenuItem key={item} value={item}>{item}</MenuItem>
                         )}
                     </Select>
-                    {/*<FormHelperText>Label + placeholder</FormHelperText>*/}
                 </FormControl>                
                 <FormControl className={classes.formControl}>
                     <InputLabel shrink htmlFor="filtroMedico-label-placeholder">
@@ -259,7 +262,6 @@ class BuscarTurnoParaSolicitar extends Component {
                         onChange={(e) =>this.handleChangeMedico(e)}
                         input={<Input name="filtroMedico" id="filtroMedico-label-placeholder" />}
                         displayEmpty
-                        //name="idMedico"
                         className={classes.selectEmpty}
                     >
                         <MenuItem value=""><em>Sin filtro</em></MenuItem>
@@ -268,6 +270,7 @@ class BuscarTurnoParaSolicitar extends Component {
                         )}
                     </Select>
                 </FormControl>
+                        */}
         </div>)
     }
 
