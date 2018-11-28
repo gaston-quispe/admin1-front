@@ -30,7 +30,8 @@ class Login extends Component {
         super(props)
         this.state = {
             dni: '',
-            password: ''
+            password: '',
+            msg: ''
         }
 
         this.change = this.change.bind(this)
@@ -52,7 +53,10 @@ class Login extends Component {
                 setUser(res.data.user)
                 this.props.history.push('/')
             })
-            .catch(err => console.log(`No se pudo autenticar: ${err.msg}`))
+            .catch(err => {
+                console.log(`No se pudo autenticar: ${err.msg}`)
+                this.setState({msg: 'El nombre de usuario o la contraseña son incorrectos. Por favor vuelva a intentarlo.'})
+            })
     }
 
     render() {
@@ -71,7 +75,7 @@ class Login extends Component {
                             name="dni"
                             label="Usuario"
                             value={this.state.dni}
-                            type="number"
+                            type="text"
                             onChange={e => this.change(e)}
                             margin="normal"
                         />
@@ -86,6 +90,7 @@ class Login extends Component {
                             margin="normal"
                         />
                         <br />
+                        <p style={{color: 'red'}}>{this.state.msg}</p>
                         <Button type="submit" variant="contained" color="primary" className={this.props.classes.button}>
                             Acceder
                         </Button>
