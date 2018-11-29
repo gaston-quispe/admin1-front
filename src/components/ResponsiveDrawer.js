@@ -17,6 +17,8 @@ import ListItemText from "@material-ui/core/ListItemText";
 import RecentActorsIcon from "@material-ui/icons/RecentActors";
 import CalendarTodayIcon from "@material-ui/icons/CalendarToday";
 import DirectionsRunIcon from "@material-ui/icons/DirectionsRun";
+import PersonIcon from "@material-ui/icons/Person";
+
 import { withRouter } from 'react-router-dom';
 //import { getJwt} from '../helpers/jwt';
 import { deleteJwt } from '../helpers/jwt';
@@ -150,6 +152,21 @@ class ResponsiveDrawer extends React.Component {
             />
           </ListItem>
         </List>
+
+        <ListItem button key={"Mi Perfil"}>
+          <ListItemIcon>
+            <PersonIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary={"Mi Perfil"}
+            onClick={()=>{
+              deleteJwt();
+              deleteUser();
+              this.handleDrawerClose();
+              this.props.history.push('/Perfil');
+            }}
+          />
+        </ListItem>
 
         <Divider />
         <ListItem button key={"Salir"}>

@@ -42,7 +42,7 @@ class DetalleTurnoPaciente extends Component {
             return (
                 <div style={{textAlign: 'center', marginTop: '30px'}}>
                     <Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleCancelarSolicitud()}>
-                        Cancelar Solicitud
+                        Cancelar Turno
                     </Button>
                 </div>
             )

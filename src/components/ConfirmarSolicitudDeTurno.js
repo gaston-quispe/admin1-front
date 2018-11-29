@@ -32,9 +32,9 @@ class ConfirmarSolicitudDeTurno extends Component {
     }
 
     handleConfirmarSolicitud () {
-        this.props.location.state.turno['Estado'] = 'VENIDERO';
-        proxy.eliminarTurnoDisponible(this.props.location.state.turno.id);
-        proxy.postAlmacenarTurno(this.props.location.state.turno);
+       // this.props.location.state.turno['Estado'] = 'VENIDERO';
+       // proxy.eliminarTurnoDisponible(this.props.location.state.turno.id);
+     //   proxy.postAlmacenarTurno(this.props.location.state.turno);
         this.props.history.push('/');
         mytoast.success('Turno creado!');
     }
@@ -45,6 +45,7 @@ class ConfirmarSolicitudDeTurno extends Component {
             <Paper className={classes.root} elevation={1}>
                 <h3>Detalles del turno:</h3>
                 <ul>
+
                     <li><b>Id Turno:</b> {this.props.location.state.turno.id}</li>
                     <li><b>Fecha:</b> {this.props.location.state.turno.Fecha}</li>
                     <li><b>Horario:</b> {this.props.location.state.turno.HoraDesde + ' a ' + this.props.location.state.turno.HoraHasta}</li>
@@ -63,6 +64,7 @@ class ConfirmarSolicitudDeTurno extends Component {
                         <li><b>Matricula:</b> {this.props.location.state.turno.Matricula}</li>                
                     </ul>
                 </ul>
+
                 <div style={{textAlign: 'center'}}>
                     <Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleConfirmarSolicitud()}>
                         Confirmar Solicitud
