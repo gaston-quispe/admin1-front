@@ -94,19 +94,9 @@ class Proxy {
             resolve (this.datos.especialidades);
         });
     }
-/*
+
     getTurnosDisponibles(fechaInicial, fechaFinal) {
-        return new Promise((resolve, reject) => {
-            resolve (
-                this.data.turnosDisponibles.filter((turno) => {
-                    return fechaInicial <= turno.Fecha && turno.Fecha <= fechaFinal;
-                })            
-            );
-        });
-    }
-    */
-    getTurnosDisponibles(fechaInicial, fechaFinal) {
-        return Axios.get(config.API_ENDPOINT + '/especialidades/1/turnosdisponibles/' + fechaInicial);
+        return Axios.get(config.API_ENDPOINT + '/especialidades/turnosdisponibles/' + fechaInicial + '/' + fechaFinal);
     }
     
     postAlmacenarTurno(turno) {

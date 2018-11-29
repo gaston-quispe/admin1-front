@@ -40,6 +40,7 @@ class ConfirmarSolicitudDeTurno extends Component {
     }
     
     render() {
+        console.log(this.props.location.state.turno)
         const { classes } = this.props;
         return (
             <Paper className={classes.root} elevation={1}>

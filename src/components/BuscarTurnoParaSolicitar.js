@@ -71,10 +71,9 @@ class BuscarTurnoParaSolicitar extends Component {
         this.state = {
             modalOpen: false,
             idEspecialista : '',
-            //idMedico: '',
             nombre: '',
-            fechaInicial: moment().format("YYYY-MM-DD"),
-            fechaFinal: moment().add(2,'month').format("YYYY-MM-DD"),
+            fechaInicial: '2018-01-12', //moment().format("YYYY-MM-DD"),
+            fechaFinal: '2018-02-12', //moment().add(2,'weeks').format("YYYY-MM-DD"),
             turnosDisponibles: [],
             turnosDisponiblesFiltrados: [],
             medicosDisponibles: [],
@@ -184,19 +183,34 @@ class BuscarTurnoParaSolicitar extends Component {
             {filtroMedico:  event.target.value}, this.filtrarTurnos)
     }
 
+    verificarFechaInicialYcargar(fechaInicial, fechaFinal) {
+        if (fechaInicial > fechaFinal)
+            this.setState({fechaFinal: fechaInicial}, this.cargarTurnosDisponibles)
+        else
+            this.cargarTurnosDisponibles()
+    }
+
     handleChangeFechaInicial(event) {
         this.setState(
-            {fechaInicial:  event.target.value}, this.cargarTurnosDisponibles)
+            {fechaInicial:  event.target.value},
+                () => this.verificarFechaInicialYcargar(this.state.fechaInicial, this.state.fechaFinal))
+    }
+
+    verificarFechaFinalYcargar(fechaInicial, fechaFinal) {
+        if (fechaInicial > fechaFinal)
+            this.setState({fechaInicial: fechaFinal}, this.cargarTurnosDisponibles)
+        else
+            this.cargarTurnosDisponibles()
     }
 
     handleChangeFechaFinal(event) {
         this.setState(
-            {fechaFinal:  event.target.value}, this.cargarTurnosDisponibles)
+            {fechaFinal:  event.target.value},
+                () => this.verificarFechaFinalYcargar(this.state.fechaInicial, this.state.fechaFinal))
     }
 
     /////////////// REDIRECCION ///////////////
     gotoConfirmarSolicitudDeTurno(turno) {
-        //this.props.history.push('/ConfirmarSolicitudDeTurno')
         this.props.history.push({
             pathname: '/ConfirmarSolicitudDeTurno',
             state: { turno: turno }
