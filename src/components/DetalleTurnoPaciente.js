@@ -68,13 +68,14 @@ class DetalleTurnoPaciente extends Component {
     }
     
     render() {
-        //console.log(this.props.location.state.turno);
+        console.log(this.props.location.state.turno); // <= ACA TENES TODOS LOS DATOS NECESARIOS PARA TRABAJAR
+        console.log(getUser()) // <= Con esto obtenes que usuario sos y toda tu info de usuario.
         const { classes } = this.props;
         return (
             <Paper className={classes.root} elevation={1}>
                 <ul>
                     <li><b>Id Turno:</b> {this.props.location.state.turno.id}</li>
-                    <li><b>Estado:</b> {this.props.location.state.turno.Estado}</li>
+                    <li><b>Estado:</b> FALTA PONER VENIDERO, CANCELADO, O ASISTIO</li> {/* Si queres podes poner una linea por cada estado y que diga Si/NO*/}
                     <li><b>Fecha:</b> {this.props.location.state.turno.Fecha}</li>
                     <li><b>Horario:</b> {this.props.location.state.turno.HoraDesde + ' a ' + this.props.location.state.turno.HoraHasta}</li>
                     <li><b>Consultorio:</b> FALTA EN EL BACK</li>

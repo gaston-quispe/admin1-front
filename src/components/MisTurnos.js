@@ -113,10 +113,10 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     cargarMisTurnos() {
-        proxy.getMisTurnos(getUser().id) // TODO: Poner UN ID REAL!!!!!!
+        proxy.getMisTurnos(getUser().id)
         .then(
             respuesta => {
-                this.setState({turnosDisponibles: this.ordenarTurnos([respuesta.data])}, this.filtrarTurnos)
+                this.setState({turnosDisponibles: this.ordenarTurnos(respuesta.data)}, this.filtrarTurnos)
             }
         );
     }
