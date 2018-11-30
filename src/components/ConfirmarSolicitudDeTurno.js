@@ -35,7 +35,7 @@ class ConfirmarSolicitudDeTurno extends Component {
     handleConfirmarSolicitud () {
        // this.props.location.state.turno['Estado'] = 'VENIDERO';
        // proxy.eliminarTurnoDisponible(this.props.location.state.turno.id);
-     //   proxy.postAlmacenarTurno(this.props.location.state.turno);
+        proxy.solicitarTurno(this.props.location.state.turno);
         this.props.history.push('/');
         mytoast.success('Turno creado!');
     }
