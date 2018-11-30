@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
-
+import { getUser } from '../helpers/user';
 import proxy from './proxy';
 
 import moment from 'moment'
@@ -113,7 +113,7 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     cargarMisTurnos() {
-        proxy.getMisTurnos(1) // TODO: Poner UN ID REAL!!!!!!
+        proxy.getMisTurnos(getUser().id) // TODO: Poner UN ID REAL!!!!!!
         .then(
             respuesta => {
                 this.setState({turnosDisponibles: this.ordenarTurnos([respuesta.data])}, this.filtrarTurnos)
