@@ -33,9 +33,8 @@ class DetalleTurnoPaciente extends Component {
 
     handleCancelarSolicitud () {
 
-        console.log(this.state.user.id);
         /*hasta que no se haga esta funcion postCancelarTurno, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"*/
-        proxy.postCancelarTurno(this.props.location.state.turno.id, this.state.user.id) //pero parece q khalil no nos para el id => preguntarle. Este numero 1 cualquiera. 
+        proxy.postCancelarTurno(1 /*this.props.location.state.turno.id*/, this.state.user.id) //pero parece q khalil no nos para el id => preguntarle. Este numero 1 cualquiera. 
             .then (respuesta => {
                 //EXITO
 
