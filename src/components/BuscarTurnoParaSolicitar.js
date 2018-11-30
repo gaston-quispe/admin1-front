@@ -74,7 +74,7 @@ class BuscarTurnoParaSolicitar extends Component {
             idEspecialista : '',
             nombre: '',
             fechaInicial: moment().format("YYYY-MM-DD"),
-            fechaFinal: moment().add(2,'weeks').format("YYYY-MM-DD"),
+            fechaFinal: moment().add(1,'weeks').format("YYYY-MM-DD"),
             turnosDisponibles: [],
             turnosDisponiblesFiltrados: [],
             medicosDisponibles: [],
