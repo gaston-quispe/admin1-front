@@ -119,6 +119,7 @@ class Proxy {
     }
 
     postCancelarTurno(turnoID) {
+        //hasta que no se haga este post, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"
         //HACER POST AL BACK PARA CANCELAR.
         /*  https://github.com/axios/axios
         axios.post('/user', {
