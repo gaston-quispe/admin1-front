@@ -6,6 +6,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import proxy from './proxy';
 import { mytoast } from '../helpers/mytoast'
+import utils from '../helpers/utils'
 
 const styles = theme => ({
     button: {
@@ -48,7 +49,7 @@ class ConfirmarSolicitudDeTurno extends Component {
                 <ul>
 
                     <li><b>Id Turno:</b> {this.props.location.state.turno.id}</li>
-                    <li><b>Fecha:</b> {this.props.location.state.turno.Fecha}</li>
+                    <li><b>Fecha:</b> {utils.YYYYDDMM_to_UI(this.props.location.state.turno.Fecha)}</li>
                     <li><b>Horario:</b> {this.props.location.state.turno.HoraDesde + ' a ' + this.props.location.state.turno.HoraHasta}</li>
                     <li><b>Consultorio:</b> {this.props.location.state.turno.Consultorio}</li>
                     <li><b>Especialidad:</b> {this.props.location.state.turno.Descripcion}</li>

@@ -1,6 +1,7 @@
 import Axios from 'axios';
 import appData from './appdata';
 import config from '../config'
+import utils from '../helpers/utils'
 class Proxy {
     constructor() {
         this.data = appData;
@@ -102,7 +103,7 @@ class Proxy {
     }
 
     getTurnosDisponibles(fechaInicial, fechaFinal) {
-        return Axios.get(config.API_ENDPOINT + '/especialidades/turnosdisponibles/' + fechaInicial + '/' + fechaFinal);
+        return Axios.get(config.API_ENDPOINT + '/especialidades/turnosdisponibles/' + utils.YYYYMMDD_to_YYYYDDMM(fechaInicial) + '/' + utils.YYYYMMDD_to_YYYYDDMM(fechaFinal))
     }
     
     postAlmacenarTurno(turno) {

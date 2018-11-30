@@ -17,6 +17,7 @@ import proxy from './proxy';
 
 import moment from 'moment'
 
+import utils from '../helpers/utils'
 //tablas
 
 import Table from '@material-ui/core/Table';
@@ -72,8 +73,8 @@ class BuscarTurnoParaSolicitar extends Component {
             modalOpen: false,
             idEspecialista : '',
             nombre: '',
-            fechaInicial: '2018-01-12', //moment().format("YYYY-MM-DD"),
-            fechaFinal: '2018-02-12', //moment().add(2,'weeks').format("YYYY-MM-DD"),
+            fechaInicial: moment().format("YYYY-MM-DD"),
+            fechaFinal: moment().add(2,'weeks').format("YYYY-MM-DD"),
             turnosDisponibles: [],
             turnosDisponiblesFiltrados: [],
             medicosDisponibles: [],
@@ -98,7 +99,7 @@ class BuscarTurnoParaSolicitar extends Component {
 
     ordenarTurnos(listaTurnos) {
         return listaTurnos.sort( (t1, t2) => {
-            if (t1.Fecha > t2.Fecha)
+            if (utils.YYYYDDMM_to_YYYYMMDD(t1.Fecha) > utils.YYYYDDMM_to_YYYYMMDD(t2.Fecha))
                 return 1;
             else if (t1.Fecha < t2.Fecha)
                 return -1;
@@ -320,7 +321,7 @@ class BuscarTurnoParaSolicitar extends Component {
                     {this.state.turnosDisponiblesFiltrados.map((turno, index) => {
                         return (
                         <TableRow key={this.concatenarCampos(turno)} className={classes.seleccionado} onClick={ (e) => this.gotoConfirmarSolicitudDeTurno(turno)}>
-                            <TableCell padding='none' style={{textAlign: "left"}}>{turno.Fecha}</TableCell>
+                            <TableCell padding='none' style={{textAlign: "left"}}>{utils.YYYYDDMM_to_UI(turno.Fecha)}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}} scope="row">{turno.HoraDesde + ' a ' + turno.HoraHasta}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}}>{turno.Descripcion}</TableCell>
                             <TableCell padding='none' style={{textAlign: "right"}} numeric>{turno.Nombre + ' ' + turno.Apellido}</TableCell>   
