@@ -68,7 +68,7 @@ class ConfirmarSolicitudDeTurno extends Component {
 
                 <div style={{textAlign: 'center'}}>
                     <Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleConfirmarSolicitud()}>
-                        Confirmar Solicitud
+                        Solicitar Turno
                     </Button>
                 </div>
             </Paper>
