@@ -144,7 +144,7 @@ class ResponsiveDrawer extends React.Component {
                     this.props.history.push('/MisTurnos')
                 } else{
                     this.handleDrawerClose();  
-                    this.props.history.push('/DetallesMedico')
+                    this.props.history.push('/MisTurnos')
                 }
                 }}
               /*onClick={()=>{

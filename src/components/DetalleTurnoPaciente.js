@@ -32,21 +32,27 @@ class DetalleTurnoPaciente extends Component {
     }
 
     handleCancelarSolicitud () {
-        proxy.postCancelarTurno(this.props.location.state.turno);
-        this.props.history.push('/');
-        mytoast.success('Turno cancelado!');
+        proxy.postCancelarTurno(/*this.props.location.state.turno.id*/) //pero parece q khalil no nos para el id => preguntarle
+            .then (respuesta => {
+                //EXITO
+                this.props.history.push('/');
+                mytoast.success('Turno cancelado!');
+            })
+            .catch(err => {
+                //FRACASO
+            });
+
+
     }
     
     renderBotonCancelar(classes) {
-        if (this.props.location.state.turno.Estado === 'VENIDERO') {
-            return (
-                <div style={{textAlign: 'center', marginTop: '30px'}}>
-                    <Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleCancelarSolicitud()}>
-                        Cancelar Turno
-                    </Button>
-                </div>
-            )
-        }        
+        return (
+            <div style={{textAlign: 'center', marginTop: '30px'}}>
+                <Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleCancelarSolicitud()}>
+                    Cancelar Turno
+                </Button>
+            </div>
+        )   
     }
     
     render() {
@@ -59,19 +65,19 @@ class DetalleTurnoPaciente extends Component {
                     <li><b>Estado:</b> {this.props.location.state.turno.Estado}</li>
                     <li><b>Fecha:</b> {this.props.location.state.turno.Fecha}</li>
                     <li><b>Horario:</b> {this.props.location.state.turno.HoraDesde + ' a ' + this.props.location.state.turno.HoraHasta}</li>
-                    <li><b>Consultorio:</b> {this.props.location.state.turno.Consultorio}</li>
-                    <li><b>Especialidad:</b> {this.props.location.state.turno.medico.Especialidad}</li>
+                    <li><b>Consultorio:</b> FALTA EN EL BACK</li>
+                    <li><b>Especialidad:</b> {this.props.location.state.turno.Descripcion}</li>
                     <li><b>Datos del Paciente:</b></li>
                     <ul>
                         <li><b>Nombre:</b> {this.state.user.nombre}</li>
                         <li><b>Apellido:</b> {this.state.user.apellido}</li>
-                        <li><b>DNI:</b> {this.state.user.dni}</li>                
+                        <li><b>DNI:</b> {this.state.user.d_n_i}</li>                
                     </ul>
                     <li><b>Datos del Medico:</b></li>
                     <ul>
-                        <li><b>Nombre:</b> {this.props.location.state.turno.medico.Nombre}</li>
-                        <li><b>Apellido:</b> {this.props.location.state.turno.medico.Apellido}</li>
-                        <li><b>Matricula:</b> {this.props.location.state.turno.medico.Matricula}</li>                
+                        <li><b>Nombre:</b> {this.props.location.state.turno.Nombre}</li>
+                        <li><b>Apellido:</b> {this.props.location.state.turno.Apellido}</li>
+                        <li><b>Matricula:</b> FALTA EN EL BACK</li>                
                     </ul>
                 </ul>
                 {this.renderBotonCancelar(classes)}

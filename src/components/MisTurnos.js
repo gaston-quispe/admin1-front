@@ -71,10 +71,9 @@ class BuscarTurnoParaSolicitar extends Component {
         this.state = {
             modalOpen: false,
             idEspecialista : '',
-            //idMedico: '',
             nombre: '',
-            fechaInicial: moment().format("YYYY-MM-DD"),
-            fechaFinal: moment().add(2,'month').format("YYYY-MM-DD"),
+            fechaInicial: '2018-01-12', //moment().format("YYYY-MM-DD"),
+            fechaFinal: '2018-02-12', //moment().add(2,'weeks').format("YYYY-MM-DD"),
             turnosDisponibles: [],
             turnosDisponiblesFiltrados: [],
             medicosDisponibles: [],
@@ -94,7 +93,8 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     componentDidMount() {
-        this.cargarTurnosDisponibles();
+        this.cargarMisTurnos();
+        //this.cargarTurnosDisponibles();
     }
 
     ordenarTurnos(listaTurnos) {
@@ -103,13 +103,22 @@ class BuscarTurnoParaSolicitar extends Component {
                 return 1;
             else if (t1.Fecha < t2.Fecha)
                 return -1;
-            else if (t1.HoraDesde > t2.HoraHasta)
+            else if (t1.HoraDesde > t2.HoraDesde)
                 return 1;
-            else if (t1.HoraDesde < t2.HoraHasta)
+            else if (t1.HoraDesde < t2.HoraDesde)
                 return -1;
             else
                 return 0;
         })
+    }
+
+    cargarMisTurnos() {
+        proxy.getMisTurnos(1) // TODO: Poner UN ID REAL!!!!!!
+        .then(
+            respuesta => {
+                this.setState({turnosDisponibles: this.ordenarTurnos([respuesta.data])}, this.filtrarTurnos)
+            }
+        );
     }
 
     cargarTurnosDisponibles() {
@@ -184,21 +193,36 @@ class BuscarTurnoParaSolicitar extends Component {
             {filtroMedico:  event.target.value}, this.filtrarTurnos)
     }
 
+    verificarFechaInicialYcargar(fechaInicial, fechaFinal) {
+        if (fechaInicial > fechaFinal)
+            this.setState({fechaFinal: fechaInicial}, this.cargarTurnosDisponibles)
+        else
+            this.cargarTurnosDisponibles()
+    }
+
     handleChangeFechaInicial(event) {
         this.setState(
-            {fechaInicial:  event.target.value}, this.cargarTurnosDisponibles)
+            {fechaInicial:  event.target.value},
+                () => this.verificarFechaInicialYcargar(this.state.fechaInicial, this.state.fechaFinal))
+    }
+
+    verificarFechaFinalYcargar(fechaInicial, fechaFinal) {
+        if (fechaInicial > fechaFinal)
+            this.setState({fechaInicial: fechaFinal}, this.cargarTurnosDisponibles)
+        else
+            this.cargarTurnosDisponibles()
     }
 
     handleChangeFechaFinal(event) {
         this.setState(
-            {fechaFinal:  event.target.value}, this.cargarTurnosDisponibles)
+            {fechaFinal:  event.target.value},
+                () => this.verificarFechaFinalYcargar(this.state.fechaInicial, this.state.fechaFinal))
     }
 
     /////////////// REDIRECCION ///////////////
-    gotoConfirmarSolicitudDeTurno(turno) {
-        //this.props.history.push('/ConfirmarSolicitudDeTurno')
+    gotoDetalleTurnoPaciente(turno) {
         this.props.history.push({
-            pathname: '/ConfirmarSolicitudDeTurno',
+            pathname: '/DetalleTurnoPaciente',
             state: { turno: turno }
         })
     }
@@ -210,7 +234,7 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     formatearFecha(fecha) {
-        return moment('2018-11-22', 'YYYY-MM-DD').format('DD/MM/YYYY')
+        return moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY')
     }
 
     /////////////// RENDER ///////////////
@@ -305,8 +329,8 @@ class BuscarTurnoParaSolicitar extends Component {
                 <TableBody>
                     {this.state.turnosDisponiblesFiltrados.map((turno, index) => {
                         return (
-                        <TableRow key={this.concatenarCampos(turno)} className={classes.seleccionado} onClick={ (e) => this.gotoConfirmarSolicitudDeTurno(turno)}>
-                            <TableCell padding='none' style={{textAlign: "left"}}>{this.formatearFecha(this.state.fechaInicial)}</TableCell>
+                        <TableRow key={this.concatenarCampos(turno)} className={classes.seleccionado} onClick={ (e) => this.gotoDetalleTurnoPaciente(turno)}>
+                            <TableCell padding='none' style={{textAlign: "left"}}>{turno.Fecha}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}} scope="row">{turno.HoraDesde + ' a ' + turno.HoraHasta}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}}>{turno.Descripcion}</TableCell>
                             <TableCell padding='none' style={{textAlign: "right"}} numeric>{turno.Nombre + ' ' + turno.Apellido}</TableCell>   
