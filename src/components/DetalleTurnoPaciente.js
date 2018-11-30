@@ -78,7 +78,7 @@ class DetalleTurnoPaciente extends Component {
             <Paper className={classes.root} elevation={1}>
                 <ul>
                     <li><b>Id Turno:</b> {this.props.location.state.turno.id}</li>
-                    <li><b>Estado:</b> FALTA PONER VENIDERO, CANCELADO, O ASISTIO</li> 
+                    <li><b>Estado:</b></li> 
                     <ul>
                         <li><b>Cancelo:</b> {estado.cancela}</li>
                         <li><b>Venidero:</b> {estado.venidero}</li>

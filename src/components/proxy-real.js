@@ -112,7 +112,7 @@ class Proxy {
             medicoID: turno.ProfesionalID,
             fecha: turno.Fecha,
             franjaHorariaID: turno.FranjaHorariaID,
-            hora: turno.HoraDesde,
+            hora: turno.Hora,
             minutos: turno.Minutos
           })
     }
@@ -129,7 +129,7 @@ class Proxy {
         //HACER POST AL BACK PARA CANCELAR.
 
 
-        return Axios.post(config.API_ENDPOINT + '/pacientes/' + turnoID + '/cancelarturnos', {
+        return Axios.post(config.API_ENDPOINT + '/pacientes/' + turnoPacience + '/cancelarturnos', {
                 "turnoID" : turnoID,
          })
 /*
