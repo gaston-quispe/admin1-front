@@ -192,9 +192,10 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     handleChangeFechaInicial(event) {
-        this.setState(
-            {fechaInicial:  event.target.value},
-                () => this.verificarFechaInicialYcargar(this.state.fechaInicial, this.state.fechaFinal))
+        if (event.target.value >= moment().format("YYYY-MM-DD"))
+            this.setState(
+                {fechaInicial:  event.target.value},
+                    () => this.verificarFechaInicialYcargar(this.state.fechaInicial, this.state.fechaFinal))
     }
 
     verificarFechaFinalYcargar(fechaInicial, fechaFinal) {
@@ -205,9 +206,10 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     handleChangeFechaFinal(event) {
-        this.setState(
-            {fechaFinal:  event.target.value},
-                () => this.verificarFechaFinalYcargar(this.state.fechaInicial, this.state.fechaFinal))
+        if (event.target.value >= moment().format("YYYY-MM-DD"))
+            this.setState(
+                {fechaFinal:  event.target.value},
+                    () => this.verificarFechaFinalYcargar(this.state.fechaInicial, this.state.fechaFinal))
     }
 
     /////////////// REDIRECCION ///////////////
