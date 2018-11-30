@@ -342,7 +342,7 @@ class BuscarTurnoParaSolicitar extends Component {
                     {this.state.turnosDisponiblesFiltrados.map((turno, index) => {
                         return (
                         <TableRow key={this.concatenarCampos(turno)} className={classes.seleccionado} onClick={ (e) => this.gotoDetalleTurnoPaciente(turno)}>
-                            <TableCell padding='none' style={{textAlign: "left"}}>{this.formatearFecha(turno.Fecha)}</TableCell>
+                            <TableCell padding='none' style={{textAlign: "left"}}>{turno.Fecha}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}} scope="row">{turno.HoraDesde + ' a ' + turno.HoraHasta}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}}>{turno.Descripcion}</TableCell>
                             <TableCell padding='none' style={{textAlign: "right"}} numeric>{turno.Nombre + ' ' + turno.Apellido}</TableCell>   
