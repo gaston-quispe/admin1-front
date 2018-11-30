@@ -32,14 +32,26 @@ class DetalleTurnoPaciente extends Component {
     }
 
     handleCancelarSolicitud () {
+
+        console.log(this.state.user.id);
         /*hasta que no se haga esta funcion postCancelarTurno, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"*/
-        proxy.postCancelarTurno(1 /*this.props.location.state.turno.id*/) //pero parece q khalil no nos para el id => preguntarle. Este numero 1 cualquiera. 
+        proxy.postCancelarTurno(this.props.location.state.turno.id, this.state.user.id) //pero parece q khalil no nos para el id => preguntarle. Este numero 1 cualquiera. 
             .then (respuesta => {
                 //EXITO
+
+                // La respuestas es un "OK". Probé con http://ec2-18-191-193-14.us-east-2.compute.amazonaws.com/TP_proyectos_backend/web/app.php/pacientes/1/turnos
+                // y andaba. Ahora si se vuelve a hacer, tira error porque ya se canceló el turno
+                // No viene con un estado de "CANCELADO". Eso tenemos q setearlo nosotros.
                 this.props.history.push('/');
                 mytoast.success('Turno cancelado!');
             })
             .catch(err => {
+                console.log(err);
+
+                this.props.history.push('/');
+                mytoast.warn('No se puede cancelar un turno que ya fue cancelado');
+
+                // mytoast.error()
                 //FRACASO
             });
 

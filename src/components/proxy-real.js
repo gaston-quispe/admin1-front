@@ -118,7 +118,23 @@ class Proxy {
         });
     }
 
-    postCancelarTurno(turnoID) {
+    postCancelarTurno(turnoID, turnoPacience) {
+        //hasta que no se haga este post, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"
+        //HACER POST AL BACK PARA CANCELAR.
+
+
+        return Axios.post(config.API_ENDPOINT + '/pacientes/' + turnoID + '/cancelarturnos', {
+                "turnoID" : turnoID,
+         })
+/*
+        return new Promise((resolve, reject) => {
+        let index = this.data.pacienteTurnos.findIndex(t => t.id === turnoAcancelar.id)
+        if (index !== -1) {
+            this.data.pacienteTurnos[index].Estado = 'CANCELADO'
+            resolve ({msg: "Cancelacion exitosa"});
+        }
+        reject({msg: "El turno a cancelar no existe"})*/            
+
         //hasta que no se haga este post, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"
         //HACER POST AL BACK PARA CANCELAR.
         /*  https://github.com/axios/axios
