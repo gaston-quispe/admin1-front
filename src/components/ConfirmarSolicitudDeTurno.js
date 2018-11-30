@@ -56,7 +56,7 @@ class ConfirmarSolicitudDeTurno extends Component {
                     <ul>
                         <li><b>Nombre:</b> {this.state.user.nombre}</li>
                         <li><b>Apellido:</b> {this.state.user.apellido}</li>
-                        <li><b>DNI:</b> {this.state.user.dni}</li>                
+                        <li><b>DNI:</b> {this.state.user.d_n_i}</li>                
                     </ul>
                     <li><b>Datos del Medico:</b></li>
                     <ul>

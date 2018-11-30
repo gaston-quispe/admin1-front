@@ -7,8 +7,10 @@ class Proxy {
     }
   
     login(dni, password) {
+        return Axios.get(config.API_ENDPOINT + '/pacientes/dni/' + dni);
+        /*
         return new Promise((resolve, reject) => {
-            if (dni === '777' && password === '777') {
+            if (dni === '777') {
                 resolve (
                     {
                         data: {
@@ -33,13 +35,17 @@ class Proxy {
                     {msg: 'Usuario o password incorrecto!'}
                 )
         });
-
+*/
         /* Comentado hasta que exista back
         return Axios.post(config.API_ENDPOINT + '/signin', {
             email: this.state.email,
             password: this.state.password,
         });
         */
+    }
+
+    getMisTurnos(idPaciente) {
+        return Axios.get(config.API_ENDPOINT + '/pacientes/' + idPaciente + '/turnos');
     }
 
     getPaciente(idPaciente) {
@@ -122,17 +128,49 @@ class Proxy {
         });
     }
 
-    postCancelarTurno(turnoAcancelar) {
+    postCancelarTurno(turnoID, turnoPacience) {
+        //hasta que no se haga este post, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"
+        //HACER POST AL BACK PARA CANCELAR.
+
+
+        return Axios.post(config.API_ENDPOINT + '/pacientes/' + turnoID + '/cancelarturnos', {
+                "turnoID" : turnoID,
+         })
+/*
         return new Promise((resolve, reject) => {
+        let index = this.data.pacienteTurnos.findIndex(t => t.id === turnoAcancelar.id)
+        if (index !== -1) {
+            this.data.pacienteTurnos[index].Estado = 'CANCELADO'
+            resolve ({msg: "Cancelacion exitosa"});
+        }
+        reject({msg: "El turno a cancelar no existe"})*/            
+
+        //hasta que no se haga este post, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"
+        //HACER POST AL BACK PARA CANCELAR.
+        /*  https://github.com/axios/axios
+        axios.post('/user', {
+    firstName: 'Fred',
+    lastName: 'Flintstone'
+  })
+  .then(function (response) {
+    console.log(response);
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+  */
+
+        //ESTO DE ABAJO YA NO IRA MAS
+        /*return new Promise((resolve, reject) => {
             let index = this.data.pacienteTurnos.findIndex(t => t.id === turnoAcancelar.id)
             if (index !== -1) {
                 this.data.pacienteTurnos[index].Estado = 'CANCELADO'
                 resolve ({msg: "Cancelacion exitosa"});
             }
             reject({msg: "El turno a cancelar no existe"})            
-        });
+        });*/
     }
-
+/*
     getMisTurnos(fechaInicial, fechaFinal) {
         return new Promise((resolve, reject) => {
             resolve (
@@ -142,7 +180,7 @@ class Proxy {
             );
         });
     }
-
+*/
 
 
     getEspecialidadesTurnosDisponibles(idEspecialidad, fecha) {

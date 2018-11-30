@@ -49,13 +49,13 @@ class Login extends Component {
         e.preventDefault();
         proxy.login(this.state.dni, this.state.password)
             .then(res => {
-                setJwt(res.data.token)
-                setUser(res.data.user)
+                setJwt("xxx.yyy.zzz")//setJwt(res.data.token) 
+                setUser(res.data[0])
                 this.props.history.push('/')
             })
             .catch(err => {
                 console.log(`No se pudo autenticar: ${err.msg}`)
-                this.setState({msg: 'El nombre de usuario o la contraseña son incorrectos. Por favor vuelva a intentarlo.'})
+                this.setState({msg: 'El DNI no corresponde a un usuario registrado. Por favor vuelva a intentarlo.'})
             })
     }
 
@@ -68,18 +68,24 @@ class Login extends Component {
                <Typography className={classes.title} color="textPrimary" gutterBottom>
                     Acceder
                 </Typography>
+                    <p>Usuarios pacientes disponibles:</p>
+                    <ul>
+                        <li>Pippo>DNI:33333333</li>
+                        <li>prueba>DNI:12222222</li>
+                    </ul>
 
                     <form onSubmit={e=> this.submit(e)}>
                         <TextField
                             id="dni"
                             name="dni"
-                            label="Usuario"
+                            label="DNI"
                             value={this.state.dni}
                             type="text"
                             onChange={e => this.change(e)}
                             margin="normal"
                         />
                         <br />
+                        {/*
                         <TextField
                             id="password"
                             name="password"
@@ -89,6 +95,7 @@ class Login extends Component {
                             onChange={e => this.change(e)}
                             margin="normal"
                         />
+                        */}
                         <br />
                         <p style={{color: 'red'}}>{this.state.msg}</p>
                         <Button type="submit" variant="contained" color="primary" className={this.props.classes.button}>
