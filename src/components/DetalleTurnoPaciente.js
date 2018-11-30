@@ -34,7 +34,7 @@ class DetalleTurnoPaciente extends Component {
     handleCancelarSolicitud () {
 
         /*hasta que no se haga esta funcion postCancelarTurno, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"*/
-        proxy.postCancelarTurno(1 /*this.props.location.state.turno.id*/, this.state.user.id) //pero parece q khalil no nos para el id => preguntarle. Este numero 1 cualquiera. 
+        proxy.postCancelarTurno(this.props.location.state.turno.id, this.state.user.id) //pero parece q khalil no nos para el id => preguntarle. Este numero 1 cualquiera. 
             .then (respuesta => {
                 //EXITO
 
@@ -45,8 +45,6 @@ class DetalleTurnoPaciente extends Component {
                 mytoast.success('Turno cancelado!');
             })
             .catch(err => {
-                console.log(err);
-
                 this.props.history.push('/');
                 mytoast.warn('No se puede cancelar un turno que ya fue cancelado');
 
@@ -71,11 +69,24 @@ class DetalleTurnoPaciente extends Component {
         console.log(this.props.location.state.turno); // <= ACA TENES TODOS LOS DATOS NECESARIOS PARA TRABAJAR
         console.log(getUser()) // <= Con esto obtenes que usuario sos y toda tu info de usuario.
         const { classes } = this.props;
+
+        var estado = {
+            cancela : this.props.location.state.turno.Cancelo == "true" ? "Si" : "No",
+            venidero : this.props.location.state.turno.Venidero == "true" ? "Si" : "No",
+            asistio : this.props.location.state.turno.Asistio  == "true" ? "Si" : "No"
+        };
+
+
         return (
             <Paper className={classes.root} elevation={1}>
                 <ul>
                     <li><b>Id Turno:</b> {this.props.location.state.turno.id}</li>
-                    <li><b>Estado:</b> FALTA PONER VENIDERO, CANCELADO, O ASISTIO</li> {/* Si queres podes poner una linea por cada estado y que diga Si/NO*/}
+                    <li><b>Estado:</b> FALTA PONER VENIDERO, CANCELADO, O ASISTIO</li> 
+                    <ul>
+                        <li><b>Cancelo:</b> {estado.cancela}</li>
+                        <li><b>Venidero:</b> {estado.venidero}</li>
+                        <li><b>Asistio:</b> {estado.asistio}</li>                
+                    </ul>
                     <li><b>Fecha:</b> {this.props.location.state.turno.Fecha}</li>
                     <li><b>Horario:</b> {this.props.location.state.turno.HoraDesde + ' a ' + this.props.location.state.turno.HoraHasta}</li>
                     <li><b>Consultorio:</b> FALTA EN EL BACK</li>

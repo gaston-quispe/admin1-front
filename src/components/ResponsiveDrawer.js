@@ -160,10 +160,10 @@ class ResponsiveDrawer extends React.Component {
           <ListItemText
             primary={"Mi Perfil"}
             onClick={()=>{
-              deleteJwt();
-              deleteUser();
-              this.handleDrawerClose();
-              this.props.history.push('/Perfil');
+              // deleteJwt();
+              // deleteUser();
+              // this.handleDrawerClose();
+              // this.props.history.push('/Perfil');
             }}
           />
         </ListItem>
