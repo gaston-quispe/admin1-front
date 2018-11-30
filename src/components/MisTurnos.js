@@ -360,10 +360,12 @@ class BuscarTurnoParaSolicitar extends Component {
         return (
             <div>
                 <Grid container spacing={24}>
+                    {/*
                     <Grid item xs={12} sm={4}>
                         {this.filtros(classes)}
                     </Grid>
-                    <Grid item xs={12} sm={8}>
+                    */}
+                    <Grid item xs={12} sm={12}>
                         {this.turnos(classes)}
                     </Grid>
                 </Grid>
