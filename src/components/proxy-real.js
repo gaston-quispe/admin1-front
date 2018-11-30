@@ -99,10 +99,20 @@ class Proxy {
         return Axios.get(config.API_ENDPOINT + '/especialidades/turnosdisponibles/' + fechaInicial + '/' + fechaFinal);
     }
     
-    postAlmacenarTurno(turno) {
-        return new Promise((resolve, reject) => {
-            resolve (this.data.pacienteTurnos.push(turno));
-        });
+    solicitarTurno(turno) {
+        return Axios.post('/pacientes/{turno.id}/solicitarturnos', {
+            medicoID: "1",
+            fecha: "2019-29-01",
+            franjaHorariaID: "2",
+            hora: "1",
+            minutos: "30"
+          })
+          .then(function (response) {
+            console.log(response);
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
     }
 
     eliminarTurnoDisponible(idTurno) {
