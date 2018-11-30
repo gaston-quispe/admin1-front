@@ -46,10 +46,7 @@ class DetalleTurnoPaciente extends Component {
             })
             .catch(err => {
                 this.props.history.push('/');
-                mytoast.warn('No se puede cancelar un turno que ya fue cancelado');
-
-                // mytoast.error()
-                //FRACASO
+                mytoast.warn(err.response.data.error.message);
             });
 
 
