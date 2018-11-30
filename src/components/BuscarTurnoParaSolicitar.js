@@ -102,9 +102,9 @@ class BuscarTurnoParaSolicitar extends Component {
                 return 1;
             else if (t1.Fecha < t2.Fecha)
                 return -1;
-            else if (t1.HoraDesde > t2.HoraHasta)
+            else if (t1.HoraDesde > t2.HoraDesde)
                 return 1;
-            else if (t1.HoraDesde < t2.HoraHasta)
+            else if (t1.HoraDesde < t2.HoraDesde)
                 return -1;
             else
                 return 0;
@@ -224,7 +224,7 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     formatearFecha(fecha) {
-        return moment('2018-11-22', 'YYYY-MM-DD').format('DD/MM/YYYY')
+        return moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY')
     }
 
     /////////////// RENDER ///////////////
@@ -320,7 +320,7 @@ class BuscarTurnoParaSolicitar extends Component {
                     {this.state.turnosDisponiblesFiltrados.map((turno, index) => {
                         return (
                         <TableRow key={this.concatenarCampos(turno)} className={classes.seleccionado} onClick={ (e) => this.gotoConfirmarSolicitudDeTurno(turno)}>
-                            <TableCell padding='none' style={{textAlign: "left"}}>{this.formatearFecha(this.state.fechaInicial)}</TableCell>
+                            <TableCell padding='none' style={{textAlign: "left"}}>{this.formatearFecha(turno.Fecha)}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}} scope="row">{turno.HoraDesde + ' a ' + turno.HoraHasta}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}}>{turno.Descripcion}</TableCell>
                             <TableCell padding='none' style={{textAlign: "right"}} numeric>{turno.Nombre + ' ' + turno.Apellido}</TableCell>   
