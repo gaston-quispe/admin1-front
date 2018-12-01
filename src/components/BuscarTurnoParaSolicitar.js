@@ -74,7 +74,7 @@ class BuscarTurnoParaSolicitar extends Component {
             idEspecialista : '',
             nombre: '',
             fechaInicial: moment().format("YYYY-MM-DD"),
-            fechaFinal: moment().add(1,'weeks').format("YYYY-MM-DD"),
+            fechaFinal: moment().add(1, 'weeks').format("YYYY-MM-DD"),
             turnosDisponibles: [],
             turnosDisponiblesFiltrados: [],
             medicosDisponibles: [],
@@ -118,7 +118,11 @@ class BuscarTurnoParaSolicitar extends Component {
                 respuesta => {
                     this.setState({turnosDisponibles: this.ordenarTurnos(respuesta.data)}, this.filtrarTurnos)
                 }
-            );
+            ).catch(
+                error => {
+                    this.setState({turnosDisponibles: []}, this.filtrarTurnos)
+                }
+            )
     }
 
     eliminarDuplicados(lista) {
@@ -184,6 +188,10 @@ class BuscarTurnoParaSolicitar extends Component {
             {filtroMedico:  event.target.value}, this.filtrarTurnos)
     }
 
+    fechaEnRangoValido(fecha) {
+        return moment().format("YYYY-MM-DD") <= fecha && fecha <= moment().add(2, 'months').format("YYYY-MM-DD")
+    }
+
     verificarFechaInicialYcargar(fechaInicial, fechaFinal) {
         if (fechaInicial > fechaFinal)
             this.setState({fechaFinal: fechaInicial}, this.cargarTurnosDisponibles)
@@ -192,7 +200,7 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     handleChangeFechaInicial(event) {
-        if (event.target.value >= moment().format("YYYY-MM-DD"))
+        if (this.fechaEnRangoValido(event.target.value))
             this.setState(
                 {fechaInicial:  event.target.value},
                     () => this.verificarFechaInicialYcargar(this.state.fechaInicial, this.state.fechaFinal))
@@ -206,7 +214,7 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     handleChangeFechaFinal(event) {
-        if (event.target.value >= moment().format("YYYY-MM-DD"))
+        if (this.fechaEnRangoValido(event.target.value))
             this.setState(
                 {fechaFinal:  event.target.value},
                     () => this.verificarFechaFinalYcargar(this.state.fechaInicial, this.state.fechaFinal))
