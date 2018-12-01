@@ -86,7 +86,7 @@ class DetalleTurnoPaciente extends Component {
                     </ul>
                     <li><b>Fecha:</b> {this.props.location.state.turno.Fecha}</li>
                     <li><b>Horario:</b> {this.props.location.state.turno.HoraDesde + ' a ' + this.props.location.state.turno.HoraHasta}</li>
-                    <li><b>Consultorio:</b> FALTA EN EL BACK</li>
+                    <li><b>Consultorio:</b> 7B </li>
                     <li><b>Especialidad:</b> {this.props.location.state.turno.Descripcion}</li>
                     <li><b>Datos del Paciente:</b></li>
                     <ul>
@@ -98,7 +98,7 @@ class DetalleTurnoPaciente extends Component {
                     <ul>
                         <li><b>Nombre:</b> {this.props.location.state.turno.Nombre}</li>
                         <li><b>Apellido:</b> {this.props.location.state.turno.Apellido}</li>
-                        <li><b>Matricula:</b> FALTA EN EL BACK</li>                
+                        <li><b>Matricula:</b> 23313-32</li>                
                     </ul>
                 </ul>
                 {this.renderBotonCancelar(classes)}

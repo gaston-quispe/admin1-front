@@ -73,7 +73,7 @@ class BuscarTurnoParaSolicitar extends Component {
             modalOpen: false,
             idEspecialista : '',
             nombre: '',
-            fechaInicial: moment().format("YYYY-MM-DD"),
+            fechaInicial: moment().add(3, 'days').format("YYYY-MM-DD"),
             fechaFinal: moment().add(1, 'weeks').format("YYYY-MM-DD"),
             turnosDisponibles: [],
             turnosDisponiblesFiltrados: [],
@@ -189,7 +189,7 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     fechaEnRangoValido(fecha) {
-        return moment().format("YYYY-MM-DD") <= fecha && fecha <= moment().add(2, 'months').format("YYYY-MM-DD")
+        return moment().add(3, 'days').format("YYYY-MM-DD") <= fecha && fecha <= moment().add(2, 'months').format("YYYY-MM-DD")
     }
 
     verificarFechaInicialYcargar(fechaInicial, fechaFinal) {
