@@ -13,6 +13,7 @@ import DetalleTurnoPaciente from "./DetalleTurnoPaciente";
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css'
+import { css } from "glamor";
 
 const appBarTitles = {
     "/" : "Home",
@@ -43,8 +44,8 @@ class App extends Component {
                 </ResponsiveDrawer>
               </Switch>
           </BrowserRouter>
-          <ToastContainer style = {{height: '50px'}}
-            position="top-right"
+          <ToastContainer style = {{bottom: '25px'}}
+            position="bottom-right"
             autoClose={2500}
             hideProgressBar
             closeButton={false}

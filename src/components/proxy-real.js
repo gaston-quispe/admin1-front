@@ -9,40 +9,6 @@ class Proxy {
   
     login(dni, password) {
         return Axios.get(config.API_ENDPOINT + '/pacientes/dni/' + dni);
-        /*
-        return new Promise((resolve, reject) => {
-            if (dni === '777') {
-                resolve (
-                    {
-                        data: {
-                        user: {
-                                id: '1',
-                                rol: 'paciente',
-                                nombre: 'Pepe',
-                                apellido: 'Argento',
-                                sexo: 'masculino',
-                                mail: 'pepe@gmail.com',
-                                dni: '777',
-                                fechaNacimiento: '1990-12-25',
-                                fechaAltaRegistro: '2016-07-13',
-                            },
-                            token: "xxxxx.yyyyy.zzzzz"
-                        }
-                    }
-                );
-            }
-            else
-                reject (
-                    {msg: 'Usuario o password incorrecto!'}
-                )
-        });
-*/
-        /* Comentado hasta que exista back
-        return Axios.post(config.API_ENDPOINT + '/signin', {
-            email: this.state.email,
-            password: this.state.password,
-        });
-        */
     }
 
     getMisTurnos(idPaciente) {
@@ -97,9 +63,11 @@ class Proxy {
     }
 
     getEspecialidades() {
-        return new Promise((resolve, reject) => {
-            resolve (this.datos.especialidades);
-        });
+        return Axios.get(config.API_ENDPOINT + '/especialidades')
+    }
+
+    getMedicos() {
+        return Axios.get(config.API_ENDPOINT + '/medicos')
     }
 
     getTurnosDisponibles(fechaInicial, fechaFinal) {
@@ -125,59 +93,10 @@ class Proxy {
     }
 
     postCancelarTurno(turnoID, turnoPacience) {
-        //hasta que no se haga este post, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"
-        //HACER POST AL BACK PARA CANCELAR.
-
-
         return Axios.post(config.API_ENDPOINT + '/pacientes/' + turnoPacience + '/cancelarturnos', {
                 "turnoID" : turnoID,
          })
-/*
-        return new Promise((resolve, reject) => {
-        let index = this.data.pacienteTurnos.findIndex(t => t.id === turnoAcancelar.id)
-        if (index !== -1) {
-            this.data.pacienteTurnos[index].Estado = 'CANCELADO'
-            resolve ({msg: "Cancelacion exitosa"});
-        }
-        reject({msg: "El turno a cancelar no existe"})*/            
-
-        //hasta que no se haga este post, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"
-        //HACER POST AL BACK PARA CANCELAR.
-        /*  https://github.com/axios/axios
-        axios.post('/user', {
-    firstName: 'Fred',
-    lastName: 'Flintstone'
-  })
-  .then(function (response) {
-    console.log(response);
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
-  */
-
-        //ESTO DE ABAJO YA NO IRA MAS
-        /*return new Promise((resolve, reject) => {
-            let index = this.data.pacienteTurnos.findIndex(t => t.id === turnoAcancelar.id)
-            if (index !== -1) {
-                this.data.pacienteTurnos[index].Estado = 'CANCELADO'
-                resolve ({msg: "Cancelacion exitosa"});
-            }
-            reject({msg: "El turno a cancelar no existe"})            
-        });*/
     }
-/*
-    getMisTurnos(fechaInicial, fechaFinal) {
-        return new Promise((resolve, reject) => {
-            resolve (
-                this.data.pacienteTurnos.filter((turno) => {
-                    return fechaInicial <= turno.Fecha && turno.Fecha <= fechaFinal;
-                })            
-            );
-        });
-    }
-*/
-
 
     getEspecialidadesTurnosDisponibles(idEspecialidad, fecha) {
         return new Promise((resolve, reject) => {

@@ -34,9 +34,6 @@ class ConfirmarSolicitudDeTurno extends Component {
 
 
     handleConfirmarSolicitud () {
-       // this.props.location.state.turno['Estado'] = 'VENIDERO';
-       // proxy.eliminarTurnoDisponible(this.props.location.state.turno.id);
-
         proxy.solicitarTurno(this.props.location.state.turno, this.state.user.id)
         .then ( respuesta => {
             this.props.history.push('/');
@@ -56,11 +53,9 @@ class ConfirmarSolicitudDeTurno extends Component {
             <Paper className={classes.root} elevation={1}>
                 <h3>Detalles del turno:</h3>
                 <ul>
-
-                    <li><b>Id Turno:</b> {this.props.location.state.turno.id}</li>
                     <li><b>Fecha:</b> {utils.YYYYDDMM_to_UI(this.props.location.state.turno.Fecha)}</li>
                     <li><b>Horario:</b> {this.props.location.state.turno.HoraDesde + ' a ' + this.props.location.state.turno.HoraHasta}</li>
-                    <li><b>Consultorio:</b> {this.props.location.state.turno.Consultorio}</li>
+                    <li><b>Consultorio:</b> 7B</li>
                     <li><b>Especialidad:</b> {this.props.location.state.turno.Descripcion}</li>
                     <li><b>Datos del Paciente:</b></li>
                     <ul>
@@ -72,7 +67,7 @@ class ConfirmarSolicitudDeTurno extends Component {
                     <ul>
                         <li><b>Nombre:</b> {this.props.location.state.turno.Nombre}</li>
                         <li><b>Apellido:</b> {this.props.location.state.turno.Apellido}</li>
-                        <li><b>Matricula:</b> {this.props.location.state.turno.Matricula}</li>                
+                        <li><b>Matricula:</b> 233135</li>                
                     </ul>
                 </ul>
 

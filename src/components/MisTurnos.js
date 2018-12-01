@@ -6,27 +6,25 @@ import { withRouter } from 'react-router-dom';
 //import { getUser } from '../helpers/user'
 
 import TextField from '@material-ui/core/TextField';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
+//import Input from '@material-ui/core/Input';
+//import InputLabel from '@material-ui/core/InputLabel';
+//import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
+//import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
 import { getUser } from '../helpers/user';
 import proxy from './proxy';
 
 import moment from 'moment'
 
-//tablas
-
+// Tablas
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 
-// toast
-//import { mytoast } from '../helpers/mytoast'
+import utils from '../helpers/utils'
 
 const styles = theme => ({
 
@@ -94,14 +92,13 @@ class BuscarTurnoParaSolicitar extends Component {
 
     componentDidMount() {
         this.cargarMisTurnos();
-        //this.cargarTurnosDisponibles();
     }
 
     ordenarTurnos(listaTurnos) {
         return listaTurnos.sort( (t1, t2) => {
-            if (t1.Fecha > t2.Fecha)
+            if (utils.YYYYDDMM_to_YYYYMMDD(t1.Fecha) > utils.YYYYDDMM_to_YYYYMMDD(t2.Fecha))
                 return 1;
-            else if (t1.Fecha < t2.Fecha)
+            else if (utils.YYYYDDMM_to_YYYYMMDD(t1.Fecha) < utils.YYYYDDMM_to_YYYYMMDD(t2.Fecha))
                 return -1;
             else if (t1.HoraDesde > t2.HoraDesde)
                 return 1;
@@ -324,7 +321,7 @@ class BuscarTurnoParaSolicitar extends Component {
         if (this.state.turnosDisponiblesFiltrados.length === 0)
             return (
                 <div style={{textAlign: "center", marginTop: '20px'}}>
-                    No existen turnos con las caracteristicas solicitadas.
+                    No hay ningun turnos registrado.
                 </div>
             )
 
@@ -340,7 +337,6 @@ class BuscarTurnoParaSolicitar extends Component {
                 </TableHead>
                 <TableBody>
                     {this.state.turnosDisponiblesFiltrados.map((turno, index) => {
-                        console.log(turno);
                         return (
                         <TableRow key={this.concatenarCampos(turno)} className={classes.seleccionado} onClick={ (e) => this.gotoDetalleTurnoPaciente(turno)}>
                             <TableCell padding='none' style={{textAlign: "left"}}>{turno.Fecha}</TableCell>

@@ -69,9 +69,9 @@ class Login extends Component {
                     Acceder
                 </Typography>
                     <p>Usuarios pacientes disponibles:</p>
-                    <ul>
-                        <li>Pippo>DNI:33333333</li>
-                        <li>prueba>DNI:12222222</li>
+                    <ul style={{textAlign: 'left'}}>
+                        <li>Pippo > DNI:33333333</li>
+                        <li>Prueba > DNI:12222222</li>
                     </ul>
 
                     <form onSubmit={e=> this.submit(e)}>

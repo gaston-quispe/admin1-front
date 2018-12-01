@@ -32,9 +32,7 @@ class DetalleTurnoPaciente extends Component {
     }
 
     handleCancelarSolicitud () {
-
-        /*hasta que no se haga esta funcion postCancelarTurno, la cosa siempre va a tirar error al hacer click al boton "CANCELAR TURNO"*/
-        proxy.postCancelarTurno(this.props.location.state.turno.id, this.state.user.id) //pero parece q khalil no nos para el id => preguntarle. Este numero 1 cualquiera. 
+        proxy.postCancelarTurno(this.props.location.state.turno.id, this.state.user.id)
             .then (respuesta => {
                 //EXITO
 
@@ -46,10 +44,8 @@ class DetalleTurnoPaciente extends Component {
             })
             .catch(err => {
                 this.props.history.push('/');
-                mytoast.warn(err.response.data.error.message);
+                mytoast.warn(err.response.data.error.message, {autoClose: 4000});
             });
-
-
     }
     
     renderBotonCancelar(classes) {
@@ -63,14 +59,12 @@ class DetalleTurnoPaciente extends Component {
     }
     
     render() {
-        console.log(this.props.location.state.turno); // <= ACA TENES TODOS LOS DATOS NECESARIOS PARA TRABAJAR
-        console.log(getUser()) // <= Con esto obtenes que usuario sos y toda tu info de usuario.
         const { classes } = this.props;
 
         var estado = {
-            cancela : this.props.location.state.turno.Cancelo == "true" ? "Si" : "No",
-            venidero : this.props.location.state.turno.Venidero == "true" ? "Si" : "No",
-            asistio : this.props.location.state.turno.Asistio  == "true" ? "Si" : "No"
+            cancela : this.props.location.state.turno.Cancelo === "true" ? "Si" : "No",
+            venidero : this.props.location.state.turno.Venidero === "true" ? "Si" : "No",
+            asistio : this.props.location.state.turno.Asistio  === "true" ? "Si" : "No"
         };
 
 
@@ -98,7 +92,7 @@ class DetalleTurnoPaciente extends Component {
                     <ul>
                         <li><b>Nombre:</b> {this.props.location.state.turno.Nombre}</li>
                         <li><b>Apellido:</b> {this.props.location.state.turno.Apellido}</li>
-                        <li><b>Matricula:</b> 23313-32</li>                
+                        <li><b>Matricula:</b> 233135</li>                
                     </ul>
                 </ul>
                 {this.renderBotonCancelar(classes)}
