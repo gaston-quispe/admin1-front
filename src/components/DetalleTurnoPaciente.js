@@ -7,6 +7,13 @@ import Paper from '@material-ui/core/Paper';
 import proxy from './proxy';
 import { mytoast } from '../helpers/mytoast'
 
+// Dialog
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 const styles = theme => ({
     button: {
       margin: theme.spacing.unit,
@@ -25,36 +32,75 @@ const styles = theme => ({
 class DetalleTurnoPaciente extends Component {
     constructor(props) {
         super(props);
-        this.handleCancelarSolicitud = this.handleCancelarSolicitud.bind(this);
+        this.ejecutarConcelacion = this.ejecutarConcelacion.bind(this);
         this.state = {
             user: getUser()
         }
     }
 
-    handleCancelarSolicitud () {
-        proxy.postCancelarTurno(this.props.location.state.turno.id, this.state.user.id)
-            .then (respuesta => {
-                //EXITO
+    // DIALOG
+    state = {
+        open: false,
+    };
+    
+    handleClickOpen = () => {
+        this.setState({ open: true });
+    };
 
-                // La respuestas es un "OK". Probé con http://ec2-18-191-193-14.us-east-2.compute.amazonaws.com/TP_proyectos_backend/web/app.php/pacientes/1/turnos
-                // y andaba. Ahora si se vuelve a hacer, tira error porque ya se canceló el turno
-                // No viene con un estado de "CANCELADO". Eso tenemos q setearlo nosotros.
-                this.props.history.push('/');
-                mytoast.success('Turno cancelado!');
-            })
-            .catch(err => {
-                this.props.history.push('/');
-                mytoast.warn(err.response.data.error.message, {autoClose: 4000});
-            });
+    handleSI = () => {
+        this.ejecutarConcelacion();
+        this.setState({ open: false });
+    };
+
+    handleNO = () => {
+        this.setState({ open: false });
+    };
+
+    // LOGICA UI
+    ejecutarConcelacion() {
+        proxy.postCancelarTurno(this.props.location.state.turno.id, this.state.user.id)
+        .then (respuesta => {
+            //EXITO
+
+            // La respuestas es un "OK". Probé con http://ec2-18-191-193-14.us-east-2.compute.amazonaws.com/TP_proyectos_backend/web/app.php/pacientes/1/turnos
+            // y andaba. Ahora si se vuelve a hacer, tira error porque ya se canceló el turno
+            // No viene con un estado de "CANCELADO". Eso tenemos q setearlo nosotros.
+            this.props.history.push('/');
+            mytoast.success('Turno cancelado!');
+        })
+        .catch(err => {
+            this.props.history.push('/');
+            mytoast.warn(err.response.data.error.message, {autoClose: 5000});
+        });
     }
     
     renderBotonCancelar(classes) {
         return (
             <div style={{textAlign: 'center', marginTop: '30px'}}>
-                <Button variant="contained" color="primary" className={classes.button} onClick={() => this.handleCancelarSolicitud()}>
+                <Button variant="contained" color="primary" className={classes.button} onClick={this.handleClickOpen}>
                     Cancelar Turno
                 </Button>
+                <Dialog
+                    open={this.state.open}
+                    onClose={this.handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                    >
+                    <DialogTitle id="alert-dialog-title">
+                        ¿Está seguro/a quedesea cancelar el turno?
+                    </DialogTitle>
+                    
+                    <DialogActions>
+                        <Button onClick={this.handleNO} color="primary">
+                            No
+                        </Button>
+                        <Button onClick={this.handleSI} color="primary" autoFocus>
+                            Si, estoy seguro
+                        </Button>
+                    </DialogActions>
+                </Dialog>
             </div>
+
         )   
     }
     

@@ -46,7 +46,7 @@ class App extends Component {
           </BrowserRouter>
           <ToastContainer style = {{bottom: '25px'}}
             position="bottom-right"
-            autoClose={2500}
+            autoClose={3000}
             hideProgressBar
             closeButton={false}
             newestOnTop={false}
