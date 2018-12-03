@@ -2,20 +2,20 @@
 import React, { Component } from 'react';
 import { withStyles } from '@material-ui/core/styles';
 import { withRouter } from 'react-router-dom';
-//import { getJwt } from '../helpers/jwt'
-//import { getUser } from '../helpers/user'
-
 import TextField from '@material-ui/core/TextField';
-//import Input from '@material-ui/core/Input';
-//import InputLabel from '@material-ui/core/InputLabel';
-//import MenuItem from '@material-ui/core/MenuItem';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
-//import Select from '@material-ui/core/Select';
+import Select from '@material-ui/core/Select';
 import Grid from '@material-ui/core/Grid';
-import { getUser } from '../helpers/user';
+
 import proxy from './proxy';
 
 import moment from 'moment'
+import _ from 'lodash';
+import utils from '../helpers/utils'
+import { getUser } from '../helpers/user';
 
 // Tablas
 import Table from '@material-ui/core/Table';
@@ -23,8 +23,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-
-import utils from '../helpers/utils'
 
 const styles = theme => ({
 
@@ -57,33 +55,34 @@ const styles = theme => ({
         padding:0,
     },
 
-    //table
+    // Tablas
     cellCenter: {
         'text-align': 'center'
     }
 });
 
-class BuscarTurnoParaSolicitar extends Component {
+class MisTurnos extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            modalOpen: false,
-            idEspecialista : '',
-            nombre: '',
-            fechaInicial: '2018-01-12', //moment().format("YYYY-MM-DD"),
-            fechaFinal: '2018-02-12', //moment().add(2,'weeks').format("YYYY-MM-DD"),
-            turnosDisponibles: [],
-            turnosDisponiblesFiltrados: [],
-            medicosDisponibles: [],
-            especialidadesDisponibles: [],
-            filtroMedico: "",
-            turnoSeleccionado: {}
+            fechaInicial: moment().add(3, 'days').format("YYYY-MM-DD"),
+            fechaFinal: moment().add(1, 'weeks').format("YYYY-MM-DD"),
+            
+            turnos: [],
+            turnosXEspecialidad: [],
+            turnosXEspecialidadXMedico: [],
+
+            especialidades: [],
+            medicos: [],
+
+            EspecialidadID: "",
+            ProfesionalID: ""
         }
 
-        this.handleChangeEspecialista = this.handleChangeEspecialista.bind(this);
-        this.handleChangeMedico = this.handleChangeMedico.bind(this);
         this.handleChangeFechaInicial = this.handleChangeFechaInicial.bind(this);
         this.handleChangeFechaFinal = this.handleChangeFechaFinal.bind(this);
+        this.handleChangeEspecialista = this.handleChangeEspecialista.bind(this);
+        this.handleChangeMedico = this.handleChangeMedico.bind(this);
 
         this.filtros = this.filtros.bind(this);
         this.turnos = this.turnos.bind(this);
@@ -91,7 +90,21 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     componentDidMount() {
-        this.cargarMisTurnos();
+        this.cargarTurnos();
+    }
+
+    cargarTurnos() {
+        //proxy.getMisTurnos(this.state.fechaInicial, this.state.fechaFinal)
+        proxy.getMisTurnos(getUser().id, this.state.fechaInicial, this.state.fechaFinal)
+            .then(
+                respuesta => {
+                    this.setState({turnos: this.ordenarTurnos(respuesta.data)}, this.resetFiltros)
+                }
+            ).catch(
+                error => {
+                    this.setState({turnosDisponibles: []}, this.filtrarTurnos)
+                }
+            )
     }
 
     ordenarTurnos(listaTurnos) {
@@ -104,102 +117,78 @@ class BuscarTurnoParaSolicitar extends Component {
                 return 1;
             else if (t1.HoraDesde < t2.HoraDesde)
                 return -1;
-            else if (t1.Descripcion > t2.Descripcion)
-                return 1;
-            else if (t1.Descripcion < t2.Descripcion)
-                return -1;
-            else if (t1.Nombre > t2.Nombre)
-                return 1;
-            else if (t1.Nombre < t2.Nombre)
-                return -1;
-            else if (t1.Apellido > t2.Apellido)
-                return 1;
-            else if (t1.Apellido < t2.Apellido)
-                return -1;
             else
                 return 0;
         })
     }
 
-    cargarMisTurnos() {
-        proxy.getMisTurnos(getUser().id)
-        .then(
-            respuesta => {
-                this.setState({turnosDisponibles: this.ordenarTurnos(respuesta.data)}, this.filtrarTurnos)
-            }
-        );
+    resetFiltros() {
+        this.setState({
+            turnosXEspecialidad: this.state.turnos,
+            turnosXEspecialidadXMedico: this.state.turnos,
+            EspecialidadID: "",
+            ProfesionalID: ""
+        }, () => {
+            this.cargarEspecialidades();
+            this.cargarMedicos();
+        })
     }
 
-    cargarTurnosDisponibles() {
-        proxy.getTurnosDisponibles(this.state.fechaInicial, this.state.fechaFinal)
-            .then(
-                respuesta => {
-                    this.setState({turnosDisponibles: this.ordenarTurnos(respuesta.data)}, this.filtrarTurnos)
-                }
-            );
+    cargarEspecialidades() {
+        let especialidades = this.state.turnos.map(turno => {return {id: turno.EspecialidadID, descripcion: turno.Descripcion}})
+        console.log(especialidades)
+        this.setState({especialidades: this.eliminarDuplicados(especialidades)})
+    }
+
+    cargarMedicos() {
+        let medicos = this.state.turnosXEspecialidad.map(turno => {return {id: turno.ProfesionalID, nombre: turno.Nombre, apellido: turno.Apellido, d_n_i: turno.dni}})
+        this.setState({medicos: this.eliminarDuplicados(medicos)})
     }
 
     eliminarDuplicados(lista) {
-        return lista.filter(function(item, pos, self) {
-            return self.indexOf(item) === pos;
-        })
+        return _.uniqBy(lista, e => e.id );
     }
 
-    actualizarEspecialidadesDisponibles() {
-        let especialidades = this.state.turnosDisponibles.map((turno) => {
-            return turno.Descipcion;
-        })
-        
-        this.setState({especialidadesDisponibles: this.eliminarDuplicados(especialidades).sort()})
+    filtrarXEspecialidad() {
+        if (this.state.EspecialidadID === "") {
+            this.setState({
+                ProfesionalID: "",
+                turnosXEspecialidad: this.state.turnos,
+                turnosXEspecialidadXMedico: this.state.turnos
+            }, this.cargarMedicos)
+        }
+        else {
+            let turnosFiltrados = this.state.turnos.filter( t => t.EspecialidadID === this.state.EspecialidadID)
+            this.setState({
+                ProfesionalID: "",
+                turnosXEspecialidad: turnosFiltrados,
+                turnosXEspecialidadXMedico: turnosFiltrados
+            }, this.cargarMedicos)
+        }
     }
 
-    actualizarMedicosDisponibles() {
-        let nombres = this.state.turnosDisponibles.map((turno) => {
-            return turno.Nombre + ' ' + turno.Apellido;
-        })
-        this.setState({medicosDisponibles: this.eliminarDuplicados(nombres).sort()})
-    }
-
-    /////////////// FILTROS ///////////////
-    filtrarXMedico(listaTurnos) {
-        if (this.state.filtroMedico === "")
-            return listaTurnos;
-
-        const res = listaTurnos.filter((turno) => {
-            return (turno.medico.Nombre + ' ' + turno.medico.Apellido) === this.state.filtroMedico;
-        })
-        return res;
-    }
-
-    filtrarXEspecialidad(listaTurnos) {
-        if (this.state.idEspecialista === "")
-            return listaTurnos;
-
-        return listaTurnos.filter((turno) => {
-            return this.state.idEspecialista === turno.medico.Descripcion
-        })
-    }
-
-    filtrarTurnos(callbackLuegoDeFiltar) {
-        let filtrados = this.state.turnosDisponibles;
-        
-        filtrados = this.filtrarXEspecialidad(filtrados);
-        filtrados = this.filtrarXMedico(filtrados);
-        this.setState({turnosDisponiblesFiltrados: filtrados}, () => {
-            this.actualizarEspecialidadesDisponibles();
-            this.actualizarMedicosDisponibles();
-        });
+    filtrarXMedico() {
+        if (this.state.ProfesionalID === "") {
+            this.setState({ turnosXEspecialidadXMedico: this.state.turnosXEspecialidad })
+        }
+        else {
+            let turnosFiltrados = this.state.turnos.filter( t => t.ProfesionalID === this.state.ProfesionalID)
+            this.setState({ turnosXEspecialidadXMedico: turnosFiltrados })
+        }
     }
 
     /////////////// EVENTOS ///////////////
     handleChangeEspecialista(event) {
-        this.setState(
-            {idEspecialista:  event.target.value}, this.filtrarTurnos)
+        this.setState({EspecialidadID: event.target.value}, this.filtrarXEspecialidad)
     }
 
     handleChangeMedico(event) {
         this.setState(
-            {filtroMedico:  event.target.value}, this.filtrarTurnos)
+            {ProfesionalID:  event.target.value}, this.filtrarXMedico)
+    }
+
+    fechaEnRangoValido(fecha) {
+        return moment().add(3, 'days').format("YYYY-MM-DD") <= fecha && fecha <= moment().add(2, 'months').format("YYYY-MM-DD")
     }
 
     verificarFechaInicialYcargar(fechaInicial, fechaFinal) {
@@ -210,28 +199,30 @@ class BuscarTurnoParaSolicitar extends Component {
     }
 
     handleChangeFechaInicial(event) {
-        this.setState(
-            {fechaInicial:  event.target.value},
-                () => this.verificarFechaInicialYcargar(this.state.fechaInicial, this.state.fechaFinal))
+        if (this.fechaEnRangoValido(event.target.value))
+            this.setState(
+                {fechaInicial:  event.target.value},
+                    () => this.verificarFechaInicialYcargar(this.state.fechaInicial, this.state.fechaFinal))
     }
 
     verificarFechaFinalYcargar(fechaInicial, fechaFinal) {
         if (fechaInicial > fechaFinal)
-            this.setState({fechaInicial: fechaFinal}, this.cargarTurnosDisponibles)
+            this.setState({fechaInicial: fechaFinal}, this.cargarTurnos)
         else
-            this.cargarTurnosDisponibles()
+            this.cargarTurnos()
     }
 
     handleChangeFechaFinal(event) {
-        this.setState(
-            {fechaFinal:  event.target.value},
-                () => this.verificarFechaFinalYcargar(this.state.fechaInicial, this.state.fechaFinal))
+        if (this.fechaEnRangoValido(event.target.value))
+            this.setState(
+                {fechaFinal:  event.target.value},
+                    () => this.verificarFechaFinalYcargar(this.state.fechaInicial, this.state.fechaFinal))
     }
 
     /////////////// REDIRECCION ///////////////
-    gotoDetalleTurnoPaciente(turno) {
+    gotoConfirmarSolicitudDeTurno(turno) {
         this.props.history.push({
-            pathname: '/DetalleTurnoPaciente',
+            pathname: '/ConfirmarSolicitudDeTurno',
             state: { turno: turno }
         })
     }
@@ -240,10 +231,6 @@ class BuscarTurnoParaSolicitar extends Component {
         var res = ""
         for (var key in  object) res += object[key]
         return res;
-    }
-
-    formatearFecha(fecha) {
-        return moment(fecha, 'YYYY-MM-DD').format('DD/MM/YYYY')
     }
 
     /////////////// RENDER ///////////////
@@ -278,50 +265,50 @@ class BuscarTurnoParaSolicitar extends Component {
                     />
                 </FormControl>
 
-                {/*
+                
                 <FormControl className={classes.formControl}>
-                    <InputLabel shrink htmlFor="idEspecialista-label-placeholder">
+                    <InputLabel shrink htmlFor="EspecialidadID-label-placeholder">
                         Especialidad
                     </InputLabel>
                     <Select
-                        value={this.state.idEspecialista}
+                        value={this.state.EspecialidadID}
                         onChange={(e) =>this.handleChangeEspecialista(e)}
-                        input={<Input name="idEspecialista" id="idEspecialista-label-placeholder" />}
+                        input={<Input name="EspecialidadID" id="EspecialidadID-label-placeholder" />}
                         displayEmpty
                         className={classes.selectEmpty}
                     >
                         <MenuItem value=""><em>Sin Filtro</em></MenuItem>
-                        {this.state.especialidadesDisponibles.map(item =>
-                            <MenuItem key={item} value={item}>{item}</MenuItem>
+                        {this.state.especialidades.map(item =>
+                            <MenuItem key={item.id} value={item.id}>{item.descripcion}</MenuItem>
                         )}
                     </Select>
-                </FormControl>                
+                </FormControl>
+                
                 <FormControl className={classes.formControl}>
                     <InputLabel shrink htmlFor="filtroMedico-label-placeholder">
                         Medico
                     </InputLabel>
                     <Select
-                        value={this.state.filtroMedico}
+                        value={this.state.ProfesionalID}
                         onChange={(e) =>this.handleChangeMedico(e)}
                         input={<Input name="filtroMedico" id="filtroMedico-label-placeholder" />}
                         displayEmpty
                         className={classes.selectEmpty}
                     >
                         <MenuItem value=""><em>Sin filtro</em></MenuItem>
-                        {this.state.medicosDisponibles.map(item =>
-                            <MenuItem key={item} value={item}>{item}</MenuItem>
+                        {this.state.medicos.map(item =>
+                            <MenuItem key={item.id} value={item.id}>{item.nombre + ' ' + item.apellido}</MenuItem>
                         )}
                     </Select>
                 </FormControl>
-                        */}
         </div>)
     }
 
     turnos(classes) {
-        if (this.state.turnosDisponiblesFiltrados.length === 0)
+        if (this.state.turnosXEspecialidadXMedico.length === 0)
             return (
                 <div style={{textAlign: "center", marginTop: '20px'}}>
-                    No hay ningun turnos registrado.
+                    No existen turnos con las caracteristicas solicitadas.
                 </div>
             )
 
@@ -336,10 +323,10 @@ class BuscarTurnoParaSolicitar extends Component {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {this.state.turnosDisponiblesFiltrados.map((turno, index) => {
+                    {this.state.turnosXEspecialidadXMedico.map((turno, index) => {
                         return (
-                        <TableRow key={this.concatenarCampos(turno)} className={classes.seleccionado} onClick={ (e) => this.gotoDetalleTurnoPaciente(turno)}>
-                            <TableCell padding='none' style={{textAlign: "left"}}>{turno.Fecha}</TableCell>
+                        <TableRow key={this.concatenarCampos(turno)} className={classes.seleccionado} onClick={ (e) => this.gotoConfirmarSolicitudDeTurno(turno)}>
+                            <TableCell padding='none' style={{textAlign: "left"}}>{utils.YYYYDDMM_to_UI(turno.Fecha)}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}} scope="row">{turno.HoraDesde + ' a ' + turno.HoraHasta}</TableCell>
                             <TableCell padding='none' style={{textAlign: "center"}}>{turno.Descripcion}</TableCell>
                             <TableCell padding='none' style={{textAlign: "right"}} numeric>{turno.Nombre + ' ' + turno.Apellido}</TableCell>   
@@ -357,12 +344,10 @@ class BuscarTurnoParaSolicitar extends Component {
         return (
             <div>
                 <Grid container spacing={24}>
-                    {/*
                     <Grid item xs={12} sm={4}>
                         {this.filtros(classes)}
                     </Grid>
-                    */}
-                    <Grid item xs={12} sm={12}>
+                    <Grid item xs={12} sm={8}>
                         {this.turnos(classes)}
                     </Grid>
                 </Grid>
@@ -371,4 +356,4 @@ class BuscarTurnoParaSolicitar extends Component {
      }
 }
 
-export default withStyles(styles)(withRouter(BuscarTurnoParaSolicitar));
+export default withStyles(styles)(withRouter(MisTurnos));
