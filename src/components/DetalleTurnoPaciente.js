@@ -108,9 +108,9 @@ class DetalleTurnoPaciente extends Component {
         const { classes } = this.props;
 
         var estado = {
-            cancela : this.props.location.state.turno.Cancelo === "true" ? "Si" : "No",
-            venidero : this.props.location.state.turno.Venidero === "true" ? "Si" : "No",
-            asistio : this.props.location.state.turno.Asistio  === "true" ? "Si" : "No"
+            cancela : this.props.location.state.turno.Cancelo == "true" ? "Si" : "No",
+            venidero : this.props.location.state.turno.Venidero == "true" ? "Si" : "No",
+            asistio : this.props.location.state.turno.Asistio  == "true" ? "Si" : "No"
         };
 
 
